@@ -1,696 +1,369 @@
-import { useState } from "react";
-import "./App.css";
+import { useEffect, useState } from "react";
 
 const mapsLink =
   "https://maps.app.goo.gl/3JBjukHjNz1eUVvB6";
 
 const tickets = [
   {
+    id: "kids-1day",
     name: "Kids (5 years below)",
     price: 99,
   },
   {
+    id: "kids-2day",
     name: "Kids (5 years below) — 2 Days",
     price: 149,
   },
   {
+    id: "stag-1day",
     name: "Stag",
     price: 499,
   },
   {
+    id: "stag-2day",
     name: "Stag — 2 Days",
     price: 899,
   },
   {
+    id: "couple-1day",
     name: "Couple",
     price: 799,
   },
   {
+    id: "couple-2day",
     name: "Couple — 2 Days",
     price: 1499,
   },
   {
+    id: "group5-1day",
     name: "Group of 5",
     price: 2450,
   },
   {
+    id: "group5-2day",
     name: "Group of 5 — 2 Days",
     price: 4699,
   },
 ];
 
-/* =====================================================
+/* --------------------------------
+   RAZORPAY SCRIPT
+-------------------------------- */
+
+function loadRazorpayScript() {
+  return new Promise((resolve) => {
+    if (window.Razorpay) {
+      resolve(true);
+      return;
+    }
+
+    const script = document.createElement("script");
+
+    script.src = "https://checkout.razorpay.com/v1/checkout.js";
+    script.onload = () => resolve(true);
+    script.onerror = () => resolve(false);
+
+    document.body.appendChild(script);
+  });
+}
+
+/* --------------------------------
    HEADER
-===================================================== */
+-------------------------------- */
 
 function Header() {
   return (
     <header className="site-header">
       <a href="/" className="site-logo">
-        RAAS GARBA X <span>DANDIYA 2.0</span>
+        RAAS GARBA X DANDIYA 2.0
       </a>
 
-      <div className="header-right">
-        <a href="/book" className="header-book">
+      <nav className="header-nav">
+        <a href="/book" className="header-book-button">
           BOOK A TICKET ↗
         </a>
 
-        <div className="profile-circle">♟</div>
-      </div>
+        <div className="profile-circle">SK</div>
+      </nav>
     </header>
   );
 }
 
-/* =====================================================
+/* --------------------------------
    TICKER
-===================================================== */
+-------------------------------- */
 
-function Ticker({ reverse = false }) {
+function Ticker({ children, reverse = false }) {
   return (
-    <div className={`ticker ${reverse ? "ticker-reverse" : ""}`}>
+    <div
+      className={`ticker ${
+        reverse ? "ticker-reverse" : ""
+      }`}
+    >
       <div className="ticker-track">
-        <span>17 OCT · BOLLYWOOD DJ NIGHT</span>
-        <b>✦</b>
-
-        <span>DRESS UP</span>
-        <b>✦</b>
-
-        <span>SHOW UP</span>
-        <b>✦</b>
-
-        <span>DANCE ALL NIGHT</span>
-        <b>✦</b>
-
-        <span>MAKE SOME NOISE</span>
-        <b>✦</b>
-
-        <span>RAAS GARBA X DANDIYA 2.0</span>
-        <b>✦</b>
-
-        <span>VIJAYAPURA LET'S DANDIYA</span>
-        <b>✦</b>
-
-        <span>16 OCT · DANDIYA NIGHT</span>
-        <b>✦</b>
-
-        <span>17 OCT · BOLLYWOOD DJ NIGHT</span>
-        <b>✦</b>
-
-        <span>DRESS UP</span>
-        <b>✦</b>
-
-        <span>SHOW UP</span>
-        <b>✦</b>
-
-        <span>DANCE ALL NIGHT</span>
-        <b>✦</b>
+        <span>{children}</span>
+        <span>{children}</span>
+        <span>{children}</span>
+        <span>{children}</span>
       </div>
     </div>
   );
 }
 
-/* =====================================================
-   HERO
-===================================================== */
-
-function Hero() {
-  return (
-    <section className="hero">
-
-      <div className="hero-top-dates">
-
-        <div className="hero-date-card">
-          <small>16 OCTOBER</small>
-          <strong>DANDIYA NIGHT</strong>
-        </div>
-
-        <div className="hero-date-card">
-          <small>17 OCTOBER</small>
-          <strong>BOLLYWOOD DJ NIGHT</strong>
-        </div>
-
-      </div>
-
-      <div className="location-pill">
-        <i></i>
-        16–17 OCT · VIJAYAPURA
-      </div>
-
-      <div className="hero-placeholder">
-
-        <div className="hero-glow"></div>
-
-        <div className="hero-content">
-
-          <div className="presented-pill">
-            ✦ &nbsp; SHRI NANDI GARDEN AND CLUBHOUSE PRESENTS
-          </div>
-
-          <h1>
-            Vijayapura's
-            <br />
-            Biggest <em>Garba</em> Event
-          </h1>
-
-          <p className="hero-collab">
-            IN COLLABORATION WITH
-          </p>
-
-          <h3>
-            RAAS GARBA X DANDIYA 2.0
-          </h3>
-
-          <div className="organiser-box">
-
-            <div>
-              <small>ORGANISED BY</small>
-
-              <strong>
-                Akshata Nayak, Chinmayi & Ketan Dhumale
-              </strong>
-            </div>
-
-            <div className="organiser-divider"></div>
-
-            <div>
-              <small>MANAGED BY</small>
-
-              <strong>D Productions</strong>
-            </div>
-
-          </div>
-
-          <a href="/book" className="gold-button hero-button">
-            BOOK A TICKET ↗
-          </a>
-
-        </div>
-
-      </div>
-
-    </section>
-  );
-}
-
-/* =====================================================
-   FEATURED BRANDS STRIP
-   MOVES LEFT → RIGHT
-===================================================== */
-
-function FeaturedBrandsStrip() {
-
-  const brands = [
-    "Eco Design Infra Solutions",
-    "D Production",
-    "Shri Nandi Garden & Clubhouse",
-    "clickitUp",
-    "WOW – Wardrobe Of Women",
-    "Sam Mehendi Art",
-    "SBG Teddy Events",
-  ];
-
-  return (
-    <section className="brands-strip">
-
-      <div className="brands-strip-label">
-        FEATURED BRANDS
-      </div>
-
-      <div className="brands-strip-window">
-
-        <div className="brands-strip-track">
-
-          {[...brands, ...brands].map((brand, index) => (
-
-            <div
-              className="brand-pill"
-              key={`${brand}-${index}`}
-            >
-
-              <div
-                className={`brand-pill-logo logo-${index % brands.length}`}
-              >
-                {index % brands.length === 1
-                  ? "D"
-                  : index % brands.length === 3
-                  ? "clickitUp."
-                  : index % brands.length === 4
-                  ? "WOW"
-                  : index % brands.length === 5
-                  ? "SAM"
-                  : index % brands.length === 6
-                  ? "SBG"
-                  : "✦"}
-              </div>
-
-              <strong>{brand}</strong>
-
-            </div>
-
-          ))}
-
-        </div>
-
-      </div>
-
-    </section>
-  );
-}
-
-/* =====================================================
-   LARGE FEATURED BRANDS
-===================================================== */
-
-function FeaturedBrands() {
-
-  const brands = [
-    "Eco Design Infra Solutions",
-    "D Production",
-    "Shri Nandi Garden & Clubhouse",
-    "clickitUp",
-    "WOW – Wardrobe Of Women",
-    "Sam Mehendi Art",
-    "SBG Teddy Events",
-  ];
-
-  return (
-    <section className="brands-section">
-
-      <div className="section-heading-row">
-
-        <div>
-
-          <p className="gold-label">
-            THE BRANDS · THE CULTURE · THE NIGHT
-          </p>
-
-          <h2>
-            Made for the
-            <br />
-            <em>brands people love.</em>
-          </h2>
-
-        </div>
-
-        <p className="heading-description">
-          The local names and creators helping bring
-          <strong> RAAS GARBA X DANDIYA 2.0 </strong>
-          to life in Vijayapura.
-        </p>
-
-      </div>
-
-      <div className="brand-grid">
-
-        {brands.map((brand, index) => (
-
-          <div className="brand-card" key={brand}>
-
-            <div className={`brand-placeholder brand-${index}`}>
-              <span>
-                {index === 1
-                  ? "D"
-                  : index === 3
-                  ? "clickitUp."
-                  : index === 4
-                  ? "WOW"
-                  : index === 5
-                  ? "SAM"
-                  : index === 6
-                  ? "SBG"
-                  : "✦"}
-              </span>
-            </div>
-
-            <h3>{brand}</h3>
-
-            <p>FEATURED BRAND</p>
-
-          </div>
-
-        ))}
-
-      </div>
-
-    </section>
-  );
-}
-
-/* =====================================================
-   VENUE
-===================================================== */
-
-function VenueSection() {
-  return (
-    <section className="venue-section">
-
-      <div className="venue-copy">
-
-        <p className="gold-label">
-          THE PLACE TO BE
-        </p>
-
-        <div className="venue-mini">
-          02 NIGHTS <span>✦</span> 01 ICONIC VENUE
-        </div>
-
-        <h2>
-          See you in
-          <br />
-          <em>Vijayapura.</em>
-        </h2>
-
-        <p className="venue-description">
-          RAAS GARBA X DANDIYA 2.0 is bringing two nights
-          of music and celebration to{" "}
-          <strong>Vijayapura.</strong>
-        </p>
-
-        <a
-          href={mapsLink}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="venue-card-home"
-        >
-
-          <div className="venue-icon">
-            ⌖
-          </div>
-
-          <div>
-
-            <small>VENUE</small>
-
-            <strong>
-              Shri Nandi Garden and Clubhouse
-            </strong>
-
-            <p>
-              Vijayapura · Scan or Tap the QR for directions
-            </p>
-
-          </div>
-
-          <div className="qr-placeholder">
-            <span>QR</span>
-          </div>
-
-        </a>
-
-        <div className="venue-stats">
-
-          <div>
-            <strong>16 OCT</strong>
-            <small>DANDIYA NIGHT</small>
-          </div>
-
-          <div>
-            <strong>17 OCT</strong>
-            <small>BOLLYWOOD DJ NIGHT</small>
-          </div>
-
-          <div>
-            <strong>5 PM+</strong>
-            <small>DOORS OPEN</small>
-          </div>
-
-        </div>
-
-      </div>
-
-      <div className="venue-visual">
-
-        <div className="visual-placeholder">
-
-          <div className="visual-lines"></div>
-
-          <div className="visual-text">
-
-            <small>PREMIUM VENUE</small>
-
-            <strong>VIJAYAPURA</strong>
-
-            <span>
-              THE VENUE · THE NIGHT · THE ENERGY
-            </span>
-
-          </div>
-
-        </div>
-
-      </div>
-
-    </section>
-  );
-}
-
-/* =====================================================
-   EXPERIENCE
-===================================================== */
-
-function ExperienceSection() {
-  return (
-    <section className="experience-section">
-
-      <div className="experience-heading">
-
-        <div>
-
-          <h2>
-            Come for the Dandiya.
-            <br />
-            <em>Stay for the madness.</em>
-          </h2>
-
-        </div>
-
-        <p>
-          RAAS GARBA X DANDIYA 2.0 is built to feel less
-          like an event you attend and more like a night
-          you remember.
-        </p>
-
-      </div>
-
-      <div className="experience-grid">
-
-        <div className="experience-large experience-placeholder-one">
-
-          <div className="now-playing">
-            ● NOW PLAYING
-          </div>
-
-          <div className="experience-bottom">
-
-            <span>01</span>
-
-            <div>
-              <h3>Garba Energy</h3>
-              <p>Music · Movement · Madness</p>
-            </div>
-
-          </div>
-
-        </div>
-
-        <div className="experience-wide experience-placeholder-two">
-
-          <div className="experience-bottom">
-
-            <span>02</span>
-
-            <div>
-              <h3>Dress Up, Show Up</h3>
-              <p>Colour · Mirror work · Twirls</p>
-            </div>
-
-          </div>
-
-        </div>
-
-        <div className="experience-small experience-placeholder-three">
-
-          <div className="experience-bottom">
-
-            <span>03</span>
-
-            <div>
-              <h3>Dance All Night</h3>
-              <p>DJ · Beats · Energy</p>
-            </div>
-
-          </div>
-
-        </div>
-
-        <div className="experience-small experience-placeholder-four">
-
-          <div className="free-pill">
-            ✦ FREE
-          </div>
-
-          <div className="experience-bottom">
-
-            <span>04</span>
-
-            <div>
-              <h3>Traditional Vibes</h3>
-              <p>Dandiya · Culture · Celebration</p>
-            </div>
-
-          </div>
-
-        </div>
-
-      </div>
-
-    </section>
-  );
-}
-
-/* =====================================================
-   CELEBRITY
-===================================================== */
-
-function CelebritySection() {
-  return (
-    <section className="celebrity-section">
-
-      <div className="celebrity-copy">
-
-        <p className="gold-label">
-          SOMETHING BIG IS COMING
-        </p>
-
-        <div className="celebrity-sub">
-          SPECIAL GUEST <span>✦</span> BIG SURPRISE
-        </div>
-
-        <h2>
-          Celebrity
-          <br />
-          <em>Moments.</em>
-        </h2>
-
-        <p>
-          A special surprise is waiting for Vijayapura.
-          Stay tuned for the big reveal.
-        </p>
-
-      </div>
-
-      <div className="celebrity-placeholder">
-
-        <div className="special-pill">
-          SPECIAL GUEST
-        </div>
-
-        <div className="blur-person">
-          <div className="head"></div>
-          <div className="body"></div>
-        </div>
-
-        <div className="question-mark">
-          ?
-        </div>
-
-      </div>
-
-    </section>
-  );
-}
-
-/* =====================================================
-   FINAL CTA
-===================================================== */
-
-function FinalCTA() {
-  return (
-    <section className="final-section">
-
-      <p className="gold-label">
-        VIJAYAPURA, ARE YOU READY?
-      </p>
-
-      <h2>
-        Your night.
-        <br />
-        <em>Your celebration.</em>
-      </h2>
-
-      <p>
-        16 & 17 October 2026 · Shri Nandi Garden and Clubhouse
-      </p>
-
-      <a href="/book" className="gold-button">
-        BOOK YOUR TICKET ↗
-      </a>
-
-    </section>
-  );
-}
-
-/* =====================================================
+/* --------------------------------
    HOME PAGE
-===================================================== */
+-------------------------------- */
 
 function HomePage() {
-  return (
-    <div className="home-page">
+  const brands = [
+    "MEDORA",
+    "RAAS",
+    "GARBA",
+    "DANDIYA",
+    "VIJAYAPURA",
+    "NANDI GARDEN",
+  ];
 
+  return (
+    <div className="site-page">
       <Header />
 
+      {/* HERO */}
+
       <main>
+        <section className="hero-section">
+          <div className="hero-glow hero-glow-one"></div>
+          <div className="hero-glow hero-glow-two"></div>
 
-        <Hero />
+          <div className="hero-content">
+            <p className="eyebrow">VIJAYAPURA • 2026</p>
 
-        <Ticker />
+            <h1>
+              Vijayapura’s
+              <br />
+              <span>Biggest Garba</span>
+              <br />
+              Event
+            </h1>
 
-        <FeaturedBrandsStrip />
+            <p className="hero-description">
+              Two unforgettable nights of Garba, Dandiya,
+              music, lights and celebration.
+            </p>
 
-        <FeaturedBrands />
+            <div className="hero-date-row">
+              <div className="date-pill">
+                <small>DATE</small>
+                <strong>16 OCTOBER</strong>
+              </div>
 
-        <Ticker reverse />
+              <div className="date-pill">
+                <small>DATE</small>
+                <strong>17 OCTOBER</strong>
+              </div>
+            </div>
 
-        <VenueSection />
+            <div className="hero-info">
+              <div>
+                <span>ORGANISED BY</span>
+                <strong>RAAS DANDIYA</strong>
+              </div>
 
-        <Ticker />
+              <div>
+                <span>VENUE</span>
+                <strong>NANDI GARDAN</strong>
+              </div>
+            </div>
 
-        <ExperienceSection />
+            <a href="/book" className="gold-button">
+              BOOK YOUR TICKET ↗
+            </a>
+          </div>
+        </section>
 
-        <CelebritySection />
+        {/* BRAND TICKER */}
 
-        <FinalCTA />
+        <Ticker reverse>
+          MEDORA • RAAS DANDIYA • GARBA • VIJAYAPURA •
+        </Ticker>
 
+        {/* FEATURED BRANDS */}
+
+        <section className="brands-section">
+          <div className="section-heading">
+            <p className="eyebrow">PARTNERS & COLLABORATORS</p>
+
+            <h2>
+              Featured
+              <br />
+              <span>Brands</span>
+            </h2>
+          </div>
+
+          <div className="brands-moving-wrapper">
+            <div className="brands-moving-track">
+              {[...brands, ...brands].map(
+                (brand, index) => (
+                  <div
+                    className="brand-placeholder"
+                    key={`${brand}-${index}`}
+                  >
+                    {brand}
+                  </div>
+                )
+              )}
+            </div>
+          </div>
+        </section>
+
+        {/* VENUE */}
+
+        <section className="venue-section">
+          <div className="venue-copy">
+            <p className="eyebrow">THE VENUE</p>
+
+            <h2>
+              Celebrate
+              <br />
+              <span>Under The Lights.</span>
+            </h2>
+
+            <p>
+              Get ready for an energetic night of Garba
+              and Dandiya at one of Vijayapura’s
+              celebration spaces.
+            </p>
+
+            <a
+              href={mapsLink}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-link"
+            >
+              OPEN IN GOOGLE MAPS ↗
+            </a>
+          </div>
+
+          <a
+            href={mapsLink}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="venue-placeholder"
+          >
+            <div className="venue-placeholder-inner">
+              <span>NANDI GARDEN</span>
+              <strong>VIJAYAPURA</strong>
+            </div>
+          </a>
+        </section>
+
+        <Ticker>
+          DANCE • MUSIC • GARBA • DANDIYA • CELEBRATION •
+        </Ticker>
+
+        {/* EXPERIENCE */}
+
+        <section className="experience-section">
+          <div className="section-heading centered">
+            <p className="eyebrow">THE EXPERIENCE</p>
+
+            <h2>
+              Made for the
+              <br />
+              <span>people who love it.</span>
+            </h2>
+          </div>
+
+          <div className="experience-grid">
+            <div className="experience-card experience-card-large">
+              <div className="experience-number">01</div>
+              <div>
+                <p>GARBA</p>
+                <h3>Dance all night.</h3>
+              </div>
+            </div>
+
+            <div className="experience-card">
+              <div className="experience-number">02</div>
+              <div>
+                <p>DANDIYA</p>
+                <h3>Feel the rhythm.</h3>
+              </div>
+            </div>
+
+            <div className="experience-card">
+              <div className="experience-number">03</div>
+              <div>
+                <p>MUSIC</p>
+                <h3>Live the moment.</h3>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* CELEBRITY */}
+
+        <section className="celebrity-section">
+          <div className="celebrity-placeholder">
+            <div className="celebrity-silhouette">
+              ★
+            </div>
+          </div>
+
+          <div className="celebrity-copy">
+            <p className="eyebrow">SPECIAL EXPERIENCE</p>
+
+            <h2>
+              A night
+              <br />
+              <span>to remember.</span>
+            </h2>
+
+            <p>
+              Music, lights, dance and an atmosphere
+              designed to keep Vijayapura celebrating.
+            </p>
+          </div>
+        </section>
+
+        {/* FINAL CTA */}
+
+        <section className="final-cta">
+          <p className="eyebrow">READY?</p>
+
+          <h2>
+            Let's
+            <br />
+            <span>Dance.</span>
+          </h2>
+
+          <a href="/book" className="gold-button">
+            BOOK YOUR TICKET ↗
+          </a>
+        </section>
       </main>
 
       <footer className="site-footer">
+        <div>
+          <strong>RAAS GARBA X DANDIYA 2.0</strong>
+          <span>VIJAYAPURA</span>
+        </div>
 
-        <span>
-          RAAS GARBA X DANDIYA 2.0
-        </span>
-
-        <span>
-          16 & 17 OCTOBER 2026
-        </span>
-
-        <span>
-          VIJAYAPURA, KARNATAKA
-        </span>
-
+        <div>
+          © 2026 RAAS DANDIYA
+        </div>
       </footer>
-
     </div>
   );
 }
 
-/* =====================================================
+/* --------------------------------
    BOOKING PAGE
-===================================================== */
+-------------------------------- */
 
 function BookingPage() {
-
-  const [selectedDate, setSelectedDate] = useState("16");
+  const [selectedDate, setSelectedDate] =
+    useState("2026-10-16");
 
   const [selectedTicket, setSelectedTicket] =
     useState(0);
@@ -698,283 +371,514 @@ function BookingPage() {
   const [quantity, setQuantity] =
     useState(1);
 
+  const [loading, setLoading] =
+    useState(false);
+
+  const [paymentStatus, setPaymentStatus] =
+    useState(null);
+
+  const selectedTicketData =
+    tickets[selectedTicket];
+
   const total =
-    tickets[selectedTicket].price * quantity;
+    selectedTicketData.price * quantity;
+
+  useEffect(() => {
+    loadRazorpayScript();
+  }, []);
+
+  /* --------------------------------
+     PAYMENT
+  -------------------------------- */
+
+  async function handlePayment() {
+    if (loading) return;
+
+    setPaymentStatus(null);
+    setLoading(true);
+
+    try {
+      /* Load Razorpay */
+
+      const razorpayLoaded =
+        await loadRazorpayScript();
+
+      if (!razorpayLoaded) {
+        throw new Error(
+          "Razorpay Checkout could not be loaded."
+        );
+      }
+
+      /* Create order */
+
+      const orderResponse =
+        await fetch("/api/create-order", {
+          method: "POST",
+
+          headers: {
+            "Content-Type": "application/json",
+          },
+
+          body: JSON.stringify({
+            ticketType:
+              selectedTicketData.id,
+
+            quantity,
+          }),
+        });
+
+      const orderData =
+        await orderResponse.json();
+
+      if (
+        !orderResponse.ok ||
+        !orderData.success
+      ) {
+        throw new Error(
+          orderData.message ||
+            "Unable to create payment order."
+        );
+      }
+
+      /* Razorpay Checkout */
+
+      const options = {
+        key: orderData.keyId,
+
+        amount: orderData.amount,
+
+        currency:
+          orderData.currency || "INR",
+
+        name:
+          "RAAS GARBA X DANDIYA 2.0",
+
+        description:
+          selectedTicketData.name,
+
+        order_id:
+          orderData.orderId,
+
+        theme: {
+          color: "#e5b942",
+        },
+
+        handler: async function (
+          response
+        ) {
+          try {
+            /* Verify payment */
+
+            const verifyResponse =
+              await fetch(
+                "/api/verify-payment",
+                {
+                  method: "POST",
+
+                  headers: {
+                    "Content-Type":
+                      "application/json",
+                  },
+
+                  body: JSON.stringify({
+                    razorpay_order_id:
+                      response.razorpay_order_id,
+
+                    razorpay_payment_id:
+                      response.razorpay_payment_id,
+
+                    razorpay_signature:
+                      response.razorpay_signature,
+                  }),
+                }
+              );
+
+            const verifyData =
+              await verifyResponse.json();
+
+            if (
+              !verifyResponse.ok ||
+              !verifyData.success
+            ) {
+              throw new Error(
+                verifyData.message ||
+                  "Payment verification failed."
+              );
+            }
+
+            setPaymentStatus({
+              type: "success",
+              message:
+                "Payment verified successfully!",
+              paymentId:
+                verifyData.paymentId,
+              orderId:
+                verifyData.orderId,
+            });
+          } catch (error) {
+            console.error(
+              "Verification error:",
+              error
+            );
+
+            setPaymentStatus({
+              type: "error",
+              message:
+                error.message ||
+                "Payment verification failed.",
+            });
+          } finally {
+            setLoading(false);
+          }
+        },
+
+        modal: {
+          ondismiss: function () {
+            setLoading(false);
+
+            setPaymentStatus({
+              type: "cancelled",
+              message:
+                "Payment window was closed.",
+            });
+          },
+        },
+      };
+
+      const paymentObject =
+        new window.Razorpay(options);
+
+      paymentObject.on(
+        "payment.failed",
+        function (response) {
+          console.error(
+            "Razorpay payment failed:",
+            response.error
+          );
+
+          setPaymentStatus({
+            type: "error",
+            message:
+              response.error?.description ||
+              "Payment failed.",
+          });
+
+          setLoading(false);
+        }
+      );
+
+      paymentObject.open();
+    } catch (error) {
+      console.error(
+        "Payment error:",
+        error
+      );
+
+      setPaymentStatus({
+        type: "error",
+        message:
+          error.message ||
+          "Something went wrong.",
+      });
+
+      setLoading(false);
+    }
+  }
 
   return (
-    <div className="booking-page">
-
+    <div className="site-page booking-page">
       <Header />
 
-      <main className="booking-main">
-
-        {/* ================================
-            BOOKING HERO
-        ================================= */}
+      <main>
+        {/* BOOKING HERO */}
 
         <section className="booking-hero">
+          <div>
+            <p className="eyebrow">
+              RAAS GARBA X DANDIYA 2.0
+            </p>
 
-          <div className="booking-pill">
-            <span></span>
-            Bookings open
+            <h1>
+              Book Your
+              <br />
+              <span>Ticket.</span>
+            </h1>
+
+            <p>
+              Choose your date, ticket and quantity.
+            </p>
           </div>
-
-          <p className="gold-label">
-            RAAS GARBA X DANDIYA 2.0 · BY AK
-          </p>
-
-          <h1>
-            Vijayapura, Let's Dandiya!
-          </h1>
-
-          <h2>
-            Where the city comes to celebrate
-          </h2>
-
-          <p>
-            Music · Dandiya · DJ · Energy · Together
-          </p>
-
-          <div className="booking-nights">
-
-            <div className="booking-night active">
-              <small>16 OCTOBER</small>
-              <strong>DANDIYA NIGHT</strong>
-            </div>
-
-            <div className="booking-night">
-              <small>17 OCTOBER</small>
-              <strong>BOLLYWOOD DJ NIGHT</strong>
-            </div>
-
-          </div>
-
-          <div className="scroll-booking">
-            SCROLL TO CHOOSE YOUR TICKETS ↓
-          </div>
-
         </section>
 
-        {/* ================================
-            TICKET SECTION
-        ================================= */}
+        {/* BOOKING CONTENT */}
 
-        <section className="ticket-section">
-
-          <p className="gold-label">
-            YOUR NIGHT STARTS HERE
-          </p>
-
-          <h2>
-            Pick your night.
-          </h2>
-
-          <p>
-            Two nights. Different energy. Same Raas spirit.
-          </p>
-
-          <div className="ticket-card">
+        <section className="booking-section">
+          <div className="booking-container">
 
             {/* DATE */}
 
-            <label>DATE</label>
+            <div className="booking-block">
+              <div className="booking-label">
+                DATE
+              </div>
 
-            <div className="date-selector">
+              <div className="date-selector">
+                <button
+                  type="button"
+                  className={
+                    selectedDate ===
+                    "2026-10-16"
+                      ? "date-select selected"
+                      : "date-select"
+                  }
+                  onClick={() =>
+                    setSelectedDate(
+                      "2026-10-16"
+                    )
+                  }
+                >
+                  <span>
+                    16 OCT
+                  </span>
 
-              <button
-                type="button"
-                className={
-                  selectedDate === "16"
-                    ? "selected"
-                    : ""
-                }
-                onClick={() =>
-                  setSelectedDate("16")
-                }
-              >
-                Fri, 16 Oct
-              </button>
-
-              <button
-                type="button"
-                className={
-                  selectedDate === "17"
-                    ? "selected"
-                    : ""
-                }
-                onClick={() =>
-                  setSelectedDate("17")
-                }
-              >
-                Sat, 17 Oct
-              </button>
-
-            </div>
-
-            {/* TICKET */}
-
-            <label>TICKET</label>
-
-            <div className="ticket-options">
-
-              {tickets.map((ticket, index) => (
+                  <small>
+                    FRIDAY
+                  </small>
+                </button>
 
                 <button
                   type="button"
-                  key={index}
-                  className={`ticket-option ${
-                    selectedTicket === index
-                      ? "selected"
-                      : ""
-                  }`}
+                  className={
+                    selectedDate ===
+                    "2026-10-17"
+                      ? "date-select selected"
+                      : "date-select"
+                  }
                   onClick={() =>
-                    setSelectedTicket(index)
+                    setSelectedDate(
+                      "2026-10-17"
+                    )
                   }
                 >
-
-                  <span className="ticket-name">
-                    {ticket.name}
+                  <span>
+                    17 OCT
                   </span>
 
-                  <span className="ticket-price">
-                    ₹
-                    {ticket.price.toLocaleString(
-                      "en-IN"
-                    )}
-                  </span>
-
+                  <small>
+                    SATURDAY
+                  </small>
                 </button>
+              </div>
+            </div>
 
-              ))}
+            {/* TICKETS */}
 
+            <div className="booking-block">
+              <div className="booking-label">
+                TICKET
+              </div>
+
+              <div className="ticket-list">
+                {tickets.map(
+                  (ticket, index) => (
+                    <button
+                      type="button"
+                      key={ticket.id}
+                      className={`ticket-option ${
+                        selectedTicket ===
+                        index
+                          ? "selected"
+                          : ""
+                      }`}
+                      onClick={() =>
+                        setSelectedTicket(
+                          index
+                        )
+                      }
+                    >
+                      <span className="ticket-name">
+                        {ticket.name}
+                      </span>
+
+                      <span className="ticket-price">
+                        ₹
+                        {ticket.price.toLocaleString(
+                          "en-IN"
+                        )}
+                      </span>
+                    </button>
+                  )
+                )}
+              </div>
             </div>
 
             {/* QUANTITY */}
 
-            <label>QUANTITY</label>
+            <div className="booking-bottom-row">
+              <div className="quantity-area">
+                <div className="booking-label">
+                  QUANTITY
+                </div>
 
-            <select
-              className="quantity-select"
-              value={quantity}
-              onChange={(e) =>
-                setQuantity(
-                  Number(e.target.value)
-                )
-              }
-            >
+                <select
+                  className="quantity-select"
+                  value={quantity}
+                  onChange={(event) =>
+                    setQuantity(
+                      Number(
+                        event.target.value
+                      )
+                    )
+                  }
+                >
+                  {[
+                    1,
+                    2,
+                    3,
+                    4,
+                    5,
+                    6,
+                    7,
+                    8,
+                    9,
+                    10,
+                  ].map((number) => (
+                    <option
+                      value={number}
+                      key={number}
+                    >
+                      {number}
+                    </option>
+                  ))}
+                </select>
+              </div>
 
-              {[1,2,3,4,5,6,7,8,9,10].map(
-                (number) => (
+              <div className="total-area">
+                <span>TOTAL</span>
 
-                  <option
-                    key={number}
-                    value={number}
-                  >
-                    {number}
-                  </option>
-
-                )
-              )}
-
-            </select>
-
-            {/* TOTAL */}
-
-            <div className="total-row">
-
-              <span>TOTAL</span>
-
-              <strong>
-                ₹{total.toLocaleString("en-IN")}
-              </strong>
-
+                <strong>
+                  ₹
+                  {total.toLocaleString(
+                    "en-IN"
+                  )}
+                </strong>
+              </div>
             </div>
 
-            {/* PAYMENT */}
+            {/* PAYMENT BUTTON */}
 
             <button
-              className="pay-button"
               type="button"
-              onClick={() =>
-                alert(
-                  "Razorpay payment integration will be connected here."
-                )
-              }
+              className="payment-button"
+              onClick={handlePayment}
+              disabled={loading}
             >
-              LOG IN & PAY
+              {loading
+                ? "PROCESSING..."
+                : "LOG IN & PAY ↗"}
             </button>
 
-            <p className="payment-note">
-              Payments are securely processed by Razorpay.
-            </p>
+            {/* PAYMENT STATUS */}
 
-          </div>
+            {paymentStatus && (
+              <div
+                className={`payment-status ${paymentStatus.type}`}
+              >
+                <strong>
+                  {paymentStatus.message}
+                </strong>
 
-        </section>
+                {paymentStatus.paymentId && (
+                  <div>
+                    Payment ID:{" "}
+                    {paymentStatus.paymentId}
+                  </div>
+                )}
 
-        {/* ================================
-            VENUE
-        ================================= */}
+                {paymentStatus.orderId && (
+                  <div>
+                    Order ID:{" "}
+                    {paymentStatus.orderId}
+                  </div>
+                )}
+              </div>
+            )}
 
-        <section className="booking-venue">
+            {/* VENUE */}
 
-          <a
-            href={mapsLink}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="booking-venue-card"
-          >
+            <div className="booking-venue">
+              <div className="booking-venue-info">
+                <p className="eyebrow">
+                  VENUE
+                </p>
 
-            <div>
+                <h2>
+                  Nandi Garden
+                </h2>
 
-              <small>EVENT TIMING</small>
+                <p>
+                  Vijayapura,
+                  Karnataka
+                </p>
 
-              <strong>
-                5:00 PM – 10:00 PM
-              </strong>
+                <a
+                  href={mapsLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-link"
+                >
+                  OPEN GOOGLE MAPS ↗
+                </a>
+              </div>
 
-              <small>VENUE</small>
+              <a
+                href={mapsLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="booking-venue-card"
+              >
+                <img
+                  src="/venue-qr.png"
+                  alt="Venue QR code"
+                />
 
-              <strong>
-                Shri Nandi Garden and Clubhouse
-              </strong>
-
-              <p>
-                Vijayapura · Scan or Tap QR for directions
-              </p>
-
+                <span>
+                  SCAN TO VIEW VENUE
+                </span>
+              </a>
             </div>
-
-            <img
-              src="/venue-qr.png"
-              alt="Venue QR code"
-            />
-
-          </a>
-
-          <p className="venue-hint">
-            Tap anywhere on the venue box to open Google Maps
-          </p>
-
+          </div>
         </section>
-
       </main>
 
       <footer className="site-footer">
-        RAAS GARBA X DANDIYA 2.0 · 16 & 17 OCTOBER 2026
-      </footer>
+        <div>
+          <strong>
+            RAAS GARBA X DANDIYA 2.0
+          </strong>
 
+          <span>
+            VIJAYAPURA
+          </span>
+        </div>
+
+        <div>
+          © 2026 RAAS DANDIYA
+        </div>
+      </footer>
     </div>
   );
 }
 
-/* =====================================================
-   PAGE ROUTING
-===================================================== */
+/* --------------------------------
+   APP ROUTING
+-------------------------------- */
 
 function App() {
+  const path =
+    window.location.pathname;
 
-  if (window.location.pathname === "/book") {
+  if (path === "/book") {
     return <BookingPage />;
   }
 
