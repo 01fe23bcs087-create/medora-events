@@ -1,6 +1,7 @@
-const crypto = import crypto from "crypto";
+import crypto from "crypto";
 
-export default async function handler(req, res) {  if (req.method !== "POST") {
+export default async function handler(req, res) {
+  if (req.method !== "POST") {
     return res.status(405).json({
       success: false,
       message: "Method not allowed",
@@ -8,17 +9,10 @@ export default async function handler(req, res) {  if (req.method !== "POST") {
   }
 
   try {
-    const {
-      razorpay_order_id,
-      razorpay_payment_id,
-      razorpay_signature,
-    } = req.body;
+    const { razorpay_order_id, razorpay_payment_id, razorpay_signature } =
+      req.body;
 
-    if (
-      !razorpay_order_id ||
-      !razorpay_payment_id ||
-      !razorpay_signature
-    ) {
+    if (!razorpay_order_id || !razorpay_payment_id || !razorpay_signature) {
       return res.status(400).json({
         success: false,
         message: "Missing payment details",
@@ -30,7 +24,10 @@ export default async function handler(req, res) {  if (req.method !== "POST") {
       .update(`${razorpay_order_id}|${razorpay_payment_id}`)
       .digest("hex");
 
-    if (generatedSignature !== razorpay_signature) {
+    const a = Buffer.from(generatedSignature);
+    const b = Buffer.from(String(razorpay_signature));
+
+    if (a.length !== b.length || !crypto.timingSafeEqual(a, b)) {
       return res.status(400).json({
         success: false,
         message: "Payment verification failed",
@@ -51,4 +48,4 @@ export default async function handler(req, res) {  if (req.method !== "POST") {
       message: "Unable to verify payment",
     });
   }
-};
+}
