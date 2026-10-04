@@ -1,4 +1,4 @@
-const Razorpay = require("razorpay");
+import Razorpay from "razorpay";
 
 const razorpay = new Razorpay({
   key_id: process.env.RAZORPAY_KEY_ID,
@@ -40,8 +40,8 @@ const tickets = {
   },
 };
 
-module.exports = async function handler(req, res) {
-  if (req.method !== "POST") {
+export default async function handler(req, res) {
+    if (req.method !== "POST") {
     return res.status(405).json({
       success: false,
       message: "Method not allowed",
