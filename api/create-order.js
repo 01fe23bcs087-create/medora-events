@@ -49,7 +49,7 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { ticketType, quantity } = req.body;
+   const { ticketType, quantity, day } = req.body;
 
     if (!ticketType || !tickets[ticketType]) {
       return res.status(400).json({
@@ -77,6 +77,7 @@ export default async function handler(req, res) {
       notes: {
         ticket_type: ticket.name,
         quantity: String(qty),
+        day: String(day || "").slice(0, 30),
       },
     });
 
