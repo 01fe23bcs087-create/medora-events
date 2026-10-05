@@ -1,24 +1,26 @@
 import { useEffect, useState } from "react";
 import "./App.css";
+import "./theme.css";
+import Ticket from "./Ticket";
 import shubhamLogo from "./shubham.jpeg";
 import dproductionsLogo from "./dproductions.jpeg";
 import medoraLogo from "./medora.jpeg";
+import mpLogo from "./MP.jpeg";
 
-
-// TODO: replace with the final Google Maps URL of Shri Adrusht Laxmi Temple
-// (open your share.google link in the browser and paste the URL it lands on)
 const MAPS_LINK = "https://share.google/HECnqFolBTaq0xffU";
 
 const VENUE_NAME = "Shri Adrusht Laxmi Temple";
 const VENUE_ADDRESS = "Gayang Bowdi, Shastri Nagar, Vijayapura";
 
-// One night only: 2-day tickets removed. Ids kept the same so /api/create-order still matches.
+const CONTACT_PHONE = "+91 7483543848";
+const CONTACT_EMAIL = "medoravijayapura@gmail.com";
+const WHATSAPP_NUMBER = "+91 7483543848";
+// One night only. Ids match /api/create-order.
 const tickets = [
   { id: "kids-1day", name: "Kids", subtitle: "Below 5 years", price: 0 },
   { id: "stag-1day", name: "Adult", subtitle: "Entry", price: 250 },
 ];
 
-// Logos live in /public/logos. Download them there and keep these filenames.
 const brands = [
   {
     name: "Jawa Yezdi Motorcycles - Shubham Auto Point",
@@ -28,13 +30,19 @@ const brands = [
   {
     name: "D Productions",
     image: dproductionsLogo,
-    instagram: "https://www.instagram.com/d_productions_0007/",
+    instagram: "https://www.instagram.com/d_production_0007/",
   },
   {
     name: "MEDORA - House of Digital Media",
     image: medoraLogo,
     role: "Digital Media & Website Partner · Bijapur",
     instagram: "https://www.instagram.com/medora.vijayapura/",
+  },
+    {
+    name: "MONESH PHOTOGRAPHY",
+    image: mpLogo,
+    role: "CHANGE ROLE, e.g. Associate Sponsor",
+    instagram: "https://www.instagram.com/mounesh__photography",
   },
 ];
 
@@ -53,13 +61,60 @@ function loadRazorpayScript() {
 }
 
 /* ---------------- HEADER ---------------- */
+const headerPartners = [
+  {
+    role: "Title Sponsor",
+    name: "Jawa Yezdi Motorcycles - Shubham Auto Point",
+    image: brands[0].image,
+    instagram: brands[0].instagram,
+  },
+  {
+    role: "Digital Media Partner & Website by",
+    name: "MEDORA - House of Digital Media",
+    image: brands[2].image,
+    instagram: brands[2].instagram,
+  },
+  {
+    role: "Organised by",
+    name: "D Productions",
+    image: brands[1].image,
+    instagram: brands[1].instagram,
+  },
+    {
+    role: "CHANGE ROLE",
+    name: "CHANGE BRAND NAME",
+    image: brands[3].image,
+    instagram: brands[3].instagram,
+  },
+];
 
-function Header({ booking = false }) {
+function PartnerRotator() {
+  const [i, setI] = useState(0);
+
+  useEffect(() => {
+    const timer = setInterval(() => setI((n) => (n + 1) % headerPartners.length), 3000);
+    return () => clearInterval(timer);
+  }, []);
+
+  const p = headerPartners[i];
+  return (
+    <a key={i} className="header-partner" href={p.instagram} target="_blank" rel="noreferrer">
+      <img src={p.image} alt={p.name} />
+      <div className="hp-text">
+        <small>{p.role}</small>
+        <strong>{p.name}</strong>
+      </div>
+    </a>
+  );
+}function Header({ booking = false }) {
   return (
     <header className="site-header">
-      <a href="/" className="brand">
-        <span className="brand-main">DANDIYA NIGHT 2.0</span>
-      </a>
+      <div className="header-left">
+        <a href="/" className="brand">
+          <span className="brand-main">DANDIYA NIGHT 2.0</span>
+        </a>
+        <PartnerRotator />
+      </div>
       <div className="header-actions">
         {!booking && (
           <a href="/book" className="header-ticket">
@@ -73,7 +128,6 @@ function Header({ booking = false }) {
     </header>
   );
 }
-
 /* ---------------- IMAGE ---------------- */
 
 function Photo({ src, alt, className = "" }) {
@@ -92,8 +146,7 @@ function Photo({ src, alt, className = "" }) {
 
 /* ---------------- FEATURED BRANDS (pill marquee) ---------------- */
 
-function FeaturedBrands()
- {
+function FeaturedBrands() {
   return (
     <section className="brands-section" id="brands">
       <div className="brands-title">FEATURED BRANDS</div>
@@ -120,7 +173,7 @@ function FeaturedBrands()
   );
 }
 
-/* ---------------- PARTNERS SHOWCASE (used on home + booking) ---------------- */
+/* ---------------- PARTNERS SHOWCASE ---------------- */
 
 function PartnersShowcase() {
   return (
@@ -141,7 +194,6 @@ function PartnersShowcase() {
         .final-partner-label { color:#e2c477; font:700 12px/1.2 Arial,Helvetica,sans-serif; letter-spacing:3px; text-transform:uppercase; }
         .final-partners-thanks { display:flex; align-items:center; justify-content:center; gap:24px; padding:76px 0 92px; color:#827b80; font:700 14px/1.2 Arial,Helvetica,sans-serif; letter-spacing:4px; text-transform:uppercase; }
         .final-partners-thanks span { color:#e2c477; font-size:18px; }
-        .final-partners-footer { margin:0 -5vw; padding:42px 20px; border-top:1px solid rgba(255,255,255,.12); background:#0e0910; text-align:center; color:#9e96a0; font:500 14px/1.2 Arial,Helvetica,sans-serif; letter-spacing:3px; }
         @media (max-width:800px) { .final-partners-showcase{padding:80px 24px 0}.final-partners-head h2{font-size:clamp(48px,12vw,72px);letter-spacing:-2px}.final-partners-grid{grid-template-columns:1fr}.final-partner-card:nth-child(7){grid-column:auto}.final-partners-thanks{padding:58px 0 70px;gap:14px;font-size:11px;letter-spacing:2.5px}.final-partners-footer{margin:0 -24px;font-size:11px} }
       `}</style>
       <div className="final-partners-head">
@@ -172,6 +224,61 @@ function PartnersShowcase() {
     </section>
   );
 }
+
+/* ---------------- NEW THEME SECTIONS ---------------- */
+
+function Highlights() {
+  const items = [
+    ["📅", "16 October", "Dandiya Night"],
+    ["📍", VENUE_NAME, "Vijayapura"],
+    ["🎶", "Live Music & DJ", "Dandiya all night"],
+    ["🕔", "Doors open 5 PM", "Till 10 PM"],
+  ];
+  return (
+    <section className="th-section">
+      <div className="th-grid">
+        {items.map(([icon, title, sub]) => (
+          <div className="th-info" key={title}>
+            <div className="th-icon">{icon}</div>
+            <div><strong>{title}</strong><span>{sub}</span></div>
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+function Contact() {
+  const rows = [
+    ["PHONE", CONTACT_PHONE, `tel:${CONTACT_PHONE.replace(/\s/g, "")}`],
+    ["EMAIL", CONTACT_EMAIL, `mailto:${CONTACT_EMAIL}`],
+    ["VENUE", `${VENUE_NAME}, ${VENUE_ADDRESS}`, MAPS_LINK],
+  ];
+  return (
+    <section className="th-section th-contact">
+      <p className="th-kicker">✦ CONTACT ✦</p>
+      <h2>We're Here to Help</h2>
+      <p className="th-lead">Reach out for passes, venue details, group bookings, or any event support.</p>
+      <div className="th-card">
+        <h3>Get in Touch</h3>
+        <p>Our team replies quickly. Reach us directly for the fastest answer.</p>
+        {rows.map(([label, value, href]) => (
+          <a className="th-row" href={href} key={label} target={label === "VENUE" ? "_blank" : undefined} rel="noreferrer">
+            <span>{label}</span>
+            <strong>{value}</strong>
+          </a>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+function WhatsAppButton() {
+  return (
+    <a className="th-wa" href={`https://wa.me/${WHATSAPP_NUMBER}`} target="_blank" rel="noreferrer" aria-label="Chat on WhatsApp">💬</a>
+  );
+}
+
 /* ---------------- HOME PAGE ---------------- */
 
 function HomePage() {
@@ -185,10 +292,7 @@ function HomePage() {
           <Photo src="/hero.png" alt="Garba event" className="hero-photo" />
           <div className="hero-overlay" />
 
-          <div
-            className="hero-top-dates"
-            style={{ display: "flex", justifyContent: "center" }}
-          >
+          <div className="hero-top-dates" style={{ display: "flex", justifyContent: "center" }}>
             <div className="hero-date-card">
               <small>16 OCTOBER</small>
               <strong>DANDIYA NIGHT</strong>
@@ -205,14 +309,7 @@ function HomePage() {
             <div className="hero-collab">IN COLLABORATION WITH</div>
             <h3>DANDIYA NIGHT 2.0</h3>
 
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                gap: "20px",
-              }}
-            >
+            <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "20px" }}>
               <div className="organiser-box">
                 <div>
                   <small>ORGANISED &amp; MANAGED BY</small>
@@ -220,12 +317,20 @@ function HomePage() {
                 </div>
               </div>
 
-              <a href="/book" className="gold-button hero-button">
+                        <a href="/book" className="gold-button hero-button">
                 BOOK A TICKET <span>↗</span>
               </a>
             </div>
           </div>
+
+          <Highlights />
         </section>
+
+        {/* TICKER + FEATURED BRANDS */}
+
+        {/* EVENT INFO CARDS */}
+  
+        
 
         {/* TICKER + FEATURED BRANDS */}
         <section className="part3-section">
@@ -250,16 +355,16 @@ function HomePage() {
         {/* VENUE */}
         <section className="home-venue-section">
           <div className="home-venue-copy">
-            <p className="home-venue-kicker">THE PLACE TO BE</p>
-            <div className="home-venue-sub">01 NIGHT</div>
-            <h2>
-              See you at
-              <br />
-              <em>Dandiya Night.</em>
-            </h2>
-            <p className="home-venue-description">
-              DANDIYA NIGHT 2.0 is bringing one night of music and celebration to <strong>Vijayapura.</strong>
-            </p>
+            <p className="home-venue-kicker">THE NIGHT AWAITS</p>
+<div className="home-venue-sub">01 NIGHT</div>
+<h2>
+  Step into the
+  <br />
+  <em>Dandiya Night.</em>
+</h2>
+<p className="home-venue-description">
+  An evening of vibrant beats, endless energy, and unforgettable celebrations in Vijayapura.
+</p>
 
             <a
               href={MAPS_LINK}
@@ -297,9 +402,19 @@ function HomePage() {
           </div>
         </section>
 
-        {/* BRANDS GRID + THANK YOU + FOOTER LINE */}
-        <PartnersShowcase />
-      </main>
+{/* BRANDS GRID + THANK YOU + FOOTER LINE */}
+<PartnersShowcase />
+
+{/* CONTACT */}
+<Contact />
+
+
+     
+     {/* FOOTER */}
+<footer className="site-footer">DANDIYA NIGHT 2.0 · 16 OCTOBER 2026</footer>
+</main>
+
+      <WhatsAppButton />
     </div>
   );
 }
@@ -313,6 +428,9 @@ function BookingPage() {
   const [selectedTicket, setSelectedTicket] = useState(tickets[1]);
   const [quantity, setQuantity] = useState(1);
   const [loading, setLoading] = useState(false);
+    const [customerName, setCustomerName] = useState("");
+  const [customerPhone, setCustomerPhone] = useState("");
+  const [ticket, setTicket] = useState(null);
 
   const dayLabel = "16 OCTOBER";
   const total = selectedTicket.price * quantity;
@@ -322,6 +440,15 @@ function BookingPage() {
   }, []);
 
   async function handlePayment() {
+        const phoneDigits = customerPhone.replace(/\D/g, "").slice(-10);
+    if (customerName.trim().length < 2) {
+      alert("Please enter your name.");
+      return;
+    }
+    if (phoneDigits.length !== 10) {
+      alert("Please enter a valid 10-digit phone number.");
+      return;
+    }
     // Free tickets (kids below 5) need no payment
     if (total === 0) {
       alert(`Free entry confirmed for ${quantity} kid(s) below 5 years. See you on ${dayLabel}!`);
@@ -345,6 +472,8 @@ function BookingPage() {
           ticketType: selectedTicket.id,
           quantity,
           day: dayLabel,
+                    name: customerName.trim(),
+          phone: phoneDigits,
         }),
       });
 
@@ -361,6 +490,7 @@ function BookingPage() {
         name: "DANDIYA NIGHT 2.0",
         description: `${selectedTicket.name} — ${dayLabel}`,
         order_id: orderData.orderId,
+                prefill: { name: customerName.trim(), contact: phoneDigits },
 
         handler: async function (response) {
           try {
@@ -372,8 +502,16 @@ function BookingPage() {
             const verifyData = await verifyResponse.json();
 
             if (verifyResponse.ok && verifyData.success) {
-              alert(`Payment successful!\nPayment ID: ${verifyData.paymentId}`);
-            } else {
+              setTicket(
+                verifyData.ticket || {
+                  paymentId: verifyData.paymentId,
+                  name: customerName.trim(),
+                  ticketName: selectedTicket.name,
+                  quantity,
+                  amount: total,
+                  emailed: false,
+                }
+              );            } else {
               alert("Payment completed but verification failed.");
             }
           } catch (error) {
@@ -384,7 +522,7 @@ function BookingPage() {
           }
         },
 
-        theme: { color: "#c7a45b" },
+        theme: { color: "#f5a623" },
 
         modal: {
           ondismiss: function () {
@@ -410,6 +548,14 @@ function BookingPage() {
 
   return (
     <div className="booking-page">
+            {ticket && (
+        <Ticket
+          ticket={ticket}
+          venue={VENUE_NAME}
+          address={VENUE_ADDRESS}
+          onClose={() => setTicket(null)}
+        />
+      )}
       <Header booking />
 
       <main>
@@ -436,6 +582,23 @@ function BookingPage() {
           <p className="bk-sub">One night. Pure Raas spirit.</p>
 
           <div className="bk-card">
+                        <p className="bk-label">YOUR DETAILS</p>
+            <input
+              className="bk-select"
+              placeholder="Full name"
+              autoComplete="name"
+              value={customerName}
+              onChange={(e) => setCustomerName(e.target.value)}
+            />
+            <input
+              className="bk-select"
+              style={{ marginTop: 10 }}
+              placeholder="Phone number (10 digits)"
+              inputMode="numeric"
+              autoComplete="tel"
+              value={customerPhone}
+              onChange={(e) => setCustomerPhone(e.target.value)}
+            />
             <p className="bk-label">TICKET</p>
             <div className="bk-tickets">
               {tickets.map((ticket) => (
@@ -493,9 +656,12 @@ function BookingPage() {
         <p>DANDIYA NIGHT 2.0 · 16 OCTOBER 2026</p>
         <small>Powered by MEDORA</small>
       </footer>
+
+      <WhatsAppButton />
     </div>
   );
 }
+
 /* ---------------- APP ---------------- */
 
 export default function App() {

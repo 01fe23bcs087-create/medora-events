@@ -1,0 +1,656 @@
+/* =========================================================
+   DANDIYA NIGHT 2.0 - deep brown + gold line-art theme
+   Loaded AFTER App.css, so it overrides it.
+   Replace src/theme.css with this file. Delete it to go back.
+   Optional: save your goddess artwork as public/goddess.png
+   ========================================================= */
+
+:root{
+  --bg:#1a0d00;
+  --panel:#2a1400;
+  --glow:#4a2800;
+  --gold:#ffb81c;
+  --gold-2:#ffd98a;
+  --amber:#ff9a1f;
+  --cream:#fff3d6;
+  --muted:rgba(255,243,214,.72);
+  --line:rgba(255,184,28,.35);
+  --line-soft:rgba(255,184,28,.18);
+  --card:rgba(255,184,28,.045);
+  --btn:linear-gradient(90deg,#ffb81c,#ff7a12);
+  --halo:0 0 40px rgba(255,150,20,.28);
+}
+
+/* ---------- page ---------- */
+body{
+  background:
+    radial-gradient(circle at 50% 12%,var(--glow) 0,rgba(74,40,0,.35) 28%,transparent 62%),
+    var(--bg);
+  background-attachment:fixed;
+  color:var(--cream);
+}
+.site-header{background:rgba(26,13,0,.94);border-bottom:1px solid var(--line);backdrop-filter:blur(8px)}
+.brand-main{color:var(--gold);font-family:var(--serif);font-weight:600;letter-spacing:3px}
+.menu-button{border-color:var(--line);color:var(--gold)}
+
+/* ---------- buttons ---------- */
+.header-ticket,.gold-button,.bk-pay,.th-book{
+  background:var(--btn);color:#2a1100;border:0;
+  box-shadow:0 6px 28px rgba(255,140,20,.35);
+}
+.bk-pay{border-radius:14px}
+
+/* ---------- hero: poster fills the screen, gold frame ---------- */
+.hero{background:var(--bg)}
+.hero-overlay{
+  background:
+    linear-gradient(180deg,rgba(26,13,0,.25),rgba(26,13,0,.15) 40%,rgba(26,13,0,.88)),
+    radial-gradient(circle at 50% 38%,rgba(255,150,20,.12),transparent 60%);
+}
+.hero::after{
+  content:"";position:absolute;inset:14px;z-index:1;pointer-events:none;
+  border:1px solid var(--line);border-radius:26px;
+  box-shadow:inset 0 0 60px rgba(255,150,20,.12);
+}
+.hero-date-card,.presented-pill,.organiser-box,.hero-location-pill,.home-venue-name{
+  background:rgba(26,13,0,.62);border-color:var(--line);backdrop-filter:blur(4px);
+}
+.hero-content h1{color:var(--cream);text-shadow:0 2px 24px rgba(0,0,0,.55)}
+.hero-content h3,.hero-collab,.hero-date-card small,.organiser-box small{color:var(--gold)}
+.presented-pill{color:var(--gold-2)}
+
+/* ---------- event info ---------- */
+.th-section{padding:80px 5vw;max-width:1100px;margin:0 auto;text-align:center}
+.th-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:22px 28px;text-align:left}
+.th-info{display:flex;gap:16px;align-items:center}
+.th-icon{
+  flex:none;width:58px;height:58px;display:grid;place-items:center;font-size:23px;
+  border:1px solid var(--line);border-radius:18px;background:var(--card);
+  box-shadow:inset 0 0 18px rgba(255,150,20,.12);
+}
+.th-info strong{display:block;font-size:17px;color:var(--cream)}
+.th-info span{color:var(--muted);font-size:14px}
+.th-book{display:inline-block;margin-top:38px;padding:17px 42px;border-radius:999px;font-size:17px;font-weight:700}
+
+/* ---------- ticker + brands ---------- */
+.part3-section{background:rgba(42,20,0,.55);border-color:var(--line)}
+.ticker{border-color:var(--line)}
+.ticker-track span{color:var(--gold-2)}
+.part3-brands-label{border-color:var(--line);color:var(--gold)}
+.brand-pill{background:var(--card);border-color:var(--line)}
+
+/* ---------- location ---------- */
+.home-venue-kicker,.home-venue-info span{color:var(--gold)}
+.home-venue-copy h2{color:var(--cream)}
+.home-venue-copy h2 em{color:var(--gold)}
+.home-venue-card,.th-card,.bk-card,.bk-night{
+  position:relative;background:var(--card);border:1px solid var(--line);
+}
+/* gold corner marks, like the line-art frame */
+.home-venue-card::before,.th-card::before,.bk-card::before{
+  content:"";position:absolute;top:-1px;left:-1px;width:22px;height:22px;
+  border-top:2px solid var(--gold);border-left:2px solid var(--gold);border-top-left-radius:inherit;pointer-events:none;
+}
+.home-venue-card::after,.th-card::after,.bk-card::after{
+  content:"";position:absolute;bottom:-1px;right:-1px;width:22px;height:22px;
+  border-bottom:2px solid var(--gold);border-right:2px solid var(--gold);border-bottom-right-radius:inherit;pointer-events:none;
+}
+.home-venue-icon{background:var(--btn);color:#2a1100}
+.home-venue-stats strong{color:var(--gold-2)}
+
+/* venue visual: glowing panel with dashed halo; drop goddess art here */
+.home-venue-visual{background:linear-gradient(160deg,#3a1d00,#1a0d00);border-color:var(--line)}
+.home-venue-visual-inner{
+  background:radial-gradient(circle at 50% 46%,#5a3200 0,#2a1400 45%,#1a0d00 80%);
+  box-shadow:inset 0 0 80px rgba(255,150,20,.12);
+  overflow:hidden;
+}
+.home-venue-visual-inner::before{
+  content:"";position:absolute;left:50%;top:48%;width:86%;aspect-ratio:1;transform:translate(-50%,-50%);
+  border:1px dashed rgba(255,184,28,.28);border-radius:50%;pointer-events:none;
+}
+.home-venue-placeholder{
+  position:relative;width:100%;height:320px;
+  background:url("/goddess.png") center/contain no-repeat;
+  filter:drop-shadow(0 0 24px rgba(255,150,20,.45));
+}
+.home-venue-placeholder span{display:none}
+.home-venue-bottom strong{color:var(--gold-2)}
+
+/* ---------- contact ---------- */
+.th-kicker{color:var(--gold);letter-spacing:4px;font-size:13px;font-weight:700;margin:0}
+.th-contact h2{margin:10px 0;font-family:var(--serif);font-weight:600;font-size:clamp(34px,6vw,54px);color:var(--cream)}
+.th-lead{max-width:520px;margin:0 auto 30px;color:var(--muted)}
+.th-card{max-width:540px;margin:0 auto;padding:28px;text-align:left;border-radius:24px;box-shadow:var(--halo)}
+.th-card h3{margin:0 0 8px;color:var(--gold);font-family:var(--serif);font-weight:600;font-size:28px}
+.th-card p{margin:0 0 10px;color:var(--muted)}
+.th-row{display:block;padding:15px 0;border-top:1px dashed var(--line)}
+.th-row span{display:block;color:var(--gold);font-size:12px;font-weight:700;letter-spacing:2px}
+.th-row strong{font-size:17px;color:var(--cream)}
+
+/* ---------- partners (beats the inline <style> in PartnersShowcase) ---------- */
+.site .final-partners-showcase{
+  background:radial-gradient(circle at 18% 42%,rgba(150,80,0,.35),transparent 40%),var(--bg);
+  color:var(--cream);
+}
+.site .final-partner-card{
+  background:linear-gradient(145deg,rgba(255,184,28,.07),rgba(60,28,0,.7));
+  border-color:var(--line);
+}
+.site .final-partner-image{background:#140a00}
+.site .final-partners-footer{background:#100700;border-color:var(--line)}
+.site .final-partners-description{color:var(--muted)}
+.site .final-partners-kicker,
+.site .final-partner-label,
+.site .final-partners-head h2 em,
+.site .final-partners-thanks span{color:var(--gold)}
+.site .final-partners-thanks{color:rgba(255,243,214,.55)}
+
+/* ---------- booking page ---------- */
+.bk-hero{background:radial-gradient(circle at 50% 0,rgba(255,150,20,.14),transparent 60%)}
+.bk-kicker,.bk-note,.bk-scroll{color:var(--gold)}
+.bk-tagline{color:var(--gold-2)}
+.bk-tickets button,.bk-select,.bk-dates button{background:#231100;border-color:var(--line);color:var(--cream)}
+.bk-tickets button.selected,.bk-dates button.active{border-color:var(--gold);background:rgba(255,184,28,.12);box-shadow:inset 0 0 20px rgba(255,150,20,.12)}
+.bk-tickets b,.bk-total strong{color:var(--gold-2)}
+.bk-total{background:rgba(255,184,28,.08)}
+.bk-live{border-color:var(--line)}
+.bk-footer{border-color:var(--line)}
+.bk-info-row{border-color:var(--line)}
+
+/* ---------- whatsapp ---------- */
+.th-wa{position:fixed;right:18px;bottom:18px;z-index:60;width:56px;height:56px;display:grid;place-items:center;border-radius:50%;background:#25d366;font-size:26px;box-shadow:0 8px 24px rgba(0,0,0,.5)}
+
+/* ---------- mobile ---------- */
+@media (max-width:700px){
+  .th-grid{grid-template-columns:1fr}
+  .th-section{padding:56px 20px}
+  .hero::after{inset:8px;border-radius:20px}
+  .home-venue-placeholder{height:260px}
+}
+
+.hero{
+  justify-content:flex-end;
+  background:radial-gradient(circle at 50% 32%,#5a3200 0,#2a1400 40%,#1a0d00 75%);
+}
+.hero .hero-photo img{
+  object-fit:contain;
+  object-position:center top;
+  width:100%;
+  height:68%;
+  margin:0 auto;
+  -webkit-mask-image:radial-gradient(ellipse at 50% 45%,#000 42%,transparent 70%);
+  mask-image:radial-gradient(ellipse at 50% 45%,#000 42%,transparent 70%);
+  filter:drop-shadow(0 0 30px rgba(255,150,20,.4));
+}
+.hero-overlay{
+  background:linear-gradient(180deg,rgba(26,13,0,0) 35%,rgba(26,13,0,.88) 75%);
+}
+
+.hero{background:#1a0d00}
+.hero .hero-photo img{
+  object-fit:cover;
+  object-position:center 18%;
+  width:100%;
+  height:100%;
+  margin:0;
+  transform:scale(1.08);
+  -webkit-mask-image:none;
+  mask-image:none;
+  filter:none;
+}
+.hero-overlay{
+  background:linear-gradient(180deg,
+    rgba(26,13,0,.05) 0%,
+    rgba(26,13,0,0) 30%,
+    rgba(26,13,0,.6) 58%,
+    rgba(26,13,0,.93) 100%);
+}
+/* Hero: photo on top, text underneath */
+.hero{
+  --hero-h:clamp(380px,74vh,780px);
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:flex-start;
+  min-height:auto;
+  padding:0 0 70px;
+  gap:30px;
+}
+.hero .hero-photo{
+  position:relative;
+  inset:auto;
+  width:100%;
+  height:var(--hero-h);
+}
+.hero .hero-overlay{
+  inset:auto;
+  top:0;
+  left:0;
+  right:0;
+  height:var(--hero-h);
+  background:linear-gradient(180deg,rgba(26,13,0,0) 65%,#1a0d00 100%);
+}
+.hero .hero-content{padding:0 20px}
+/* Bigger header text */
+.site-header{height:88px}
+.brand-main{
+  font-size:26px;
+  letter-spacing:4px;
+}
+.header-ticket{
+  font-size:15px;
+  padding:16px 30px;
+}
+
+@media (max-width:900px){
+  .site-header{height:76px}
+  .brand-main{font-size:18px;letter-spacing:2px}
+  .header-ticket{font-size:12px;padding:13px 20px}
+}
+/* Bigger date card + presenter pill */
+.hero .hero-date-card{
+  padding:20px 38px;
+  border-radius:22px;
+}
+.hero .hero-date-card small{
+  font-size:16px;
+  letter-spacing:3px;
+}
+.hero .hero-date-card strong{
+  display:block;
+  margin-top:4px;
+  font-size:30px;
+  letter-spacing:1px;
+}
+
+.hero .presented-pill{
+  padding:18px 38px;
+  font-size:18px;
+  letter-spacing:3px;
+  border-radius:999px;
+}
+
+@media (max-width:700px){
+  .hero .hero-date-card{padding:16px 28px}
+  .hero .hero-date-card small{font-size:13px}
+  .hero .hero-date-card strong{font-size:23px}
+  .hero .presented-pill{
+    padding:14px 24px;
+    font-size:13px;
+    letter-spacing:2px;
+    border-radius:28px;
+  }
+}
+/* Hide "In collaboration with" + "Dandiya Night 2.0" lines */
+.hero .hero-collab,
+.hero .hero-content h3{
+  display:none;
+}
+/* Desktop: show the whole goddess artwork */
+@media (min-width:901px){
+  .hero{--hero-h:clamp(520px,82vh,860px)}
+  .hero .hero-photo img{
+    object-fit:contain;
+    object-position:center top;
+    transform:none;
+    -webkit-mask-image:radial-gradient(ellipse at 50% 48%,#000 55%,transparent 78%);
+    mask-image:radial-gradient(ellipse at 50% 48%,#000 55%,transparent 78%);
+  }
+}
+/* Full-page hero: blurred glow background + big sharp artwork */
+.hero .hero-photo{overflow:hidden}
+.hero .hero-photo::before{
+  content:"";
+  position:absolute;
+  inset:-60px;
+  background:url("/hero.png") center/cover no-repeat;
+  filter:blur(45px) brightness(.6) saturate(1.3);
+}
+.hero .hero-photo img{
+  position:relative;
+  z-index:1;
+  object-fit:contain;
+  object-position:center;
+  transform:none;
+  -webkit-mask-image:radial-gradient(ellipse at 50% 50%,#000 60%,transparent 82%);
+  mask-image:radial-gradient(ellipse at 50% 50%,#000 60%,transparent 82%);
+}
+@media (min-width:901px){
+  .hero{--hero-h:clamp(600px,94vh,980px)}
+}/* Full-page hero: blurred glow background + big sharp artwork */
+.hero .hero-photo{overflow:hidden}
+.hero .hero-photo::before{
+  content:"";
+  position:absolute;
+  inset:-60px;
+  background:url("/hero.png") center/cover no-repeat;
+  filter:blur(45px) brightness(.6) saturate(1.3);
+}
+.hero .hero-photo img{
+  position:relative;
+  z-index:1;
+  object-fit:contain;
+  object-position:center;
+  transform:none;
+  -webkit-mask-image:radial-gradient(ellipse at 50% 50%,#000 60%,transparent 82%);
+  mask-image:radial-gradient(ellipse at 50% 50%,#000 60%,transparent 82%);
+}
+@media (min-width:901px){
+  .hero{--hero-h:clamp(600px,94vh,980px)}
+}
+
+/* Full-page hero: artwork covers the whole width */
+.hero .hero-photo::before{display:none}
+.hero .hero-photo img{
+  object-fit:cover;
+  object-position:center 38%;
+  width:100%;
+  height:100%;
+  transform:scale(1.12);
+  -webkit-mask-image:none;
+  mask-image:none;
+  filter:none;
+}
+.hero{--hero-h:clamp(560px,92vh,920px)}
+.hero .hero-overlay{
+  background:linear-gradient(180deg,rgba(26,13,0,0) 70%,#1a0d00 100%);
+}
+/* BIG contact card */
+.th-contact{max-width:1400px !important;padding:100px 5vw !important}
+.th-contact h2{font-size:clamp(44px,7vw,84px) !important}
+.th-contact .th-lead{max-width:760px !important;font-size:21px !important}
+
+.th-contact .th-card{
+  max-width:960px !important;
+  width:100% !important;
+  padding:56px 64px !important;
+  border-radius:36px !important;
+}
+.th-contact .th-card h3{font-size:46px !important;margin-bottom:14px !important}
+.th-contact .th-card p{font-size:20px !important;margin-bottom:22px !important}
+.th-contact .th-row{padding:26px 0 !important}
+.th-contact .th-row span{font-size:15px !important;letter-spacing:3px !important;margin-bottom:8px !important}
+.th-contact .th-row strong{font-size:28px !important;line-height:1.35 !important}
+
+@media (max-width:700px){
+  .th-contact{padding:60px 16px !important}
+  .th-contact .th-card{padding:30px 22px !important;border-radius:26px !important}
+  .th-contact .th-card h3{font-size:32px !important}
+  .th-contact .th-card p{font-size:16px !important}
+  .th-contact .th-row strong{font-size:20px !important}
+}
+/* Footer line at the very bottom */
+.site-footer{
+  padding:42px 20px;
+  border-top:1px solid var(--line);
+  background:#100700;
+  text-align:center;
+  color:var(--gold-2);
+  font-size:14px;
+  font-weight:500;
+  letter-spacing:3px;
+}
+@media (max-width:700px){
+  .site-footer{font-size:11px;letter-spacing:2px}
+}
+
+   .site .final-partners-footer{display:none !important}
+
+   .site-footer{
+  padding:42px 20px;
+  border-top:1px solid var(--line);
+  background:#100700;
+  text-align:center;
+  color:var(--gold-2);
+  font-size:14px;
+  font-weight:500;
+  letter-spacing:3px;
+}
+@media (max-width:700px){
+  .site-footer{font-size:11px;letter-spacing:2px}
+}
+
+/* Rotating partner badge in the header */
+.header-left{display:flex;align-items:center;gap:22px;min-width:0}
+.header-partner{
+  display:flex;align-items:center;gap:10px;
+  padding:5px 18px 5px 5px;
+  border:1px solid var(--line);border-radius:999px;
+  background:var(--card);
+  animation:partnerIn .6s ease;
+  max-width:340px;
+}
+.header-partner img{width:38px;height:38px;border-radius:50%;object-fit:cover;background:#fff;flex:none}
+.header-partner span{
+  font-size:13px;font-weight:700;color:var(--cream);
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+@keyframes partnerIn{
+  from{opacity:0;transform:translateY(8px)}
+  to{opacity:1;transform:none}
+}
+@media (max-width:900px){
+  .header-left{gap:12px}
+  .header-partner{padding:4px}
+  .header-partner span{display:none}
+}
+@media (prefers-reduced-motion:reduce){.header-partner{animation:none}}
+
+/* Center the rotating partner badge in the header */
+.site-header{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);
+  align-items:center;
+}
+.header-left{display:contents}
+.site-header .brand{justify-self:start}
+.site-header .header-partner{justify-self:center}
+.site-header .header-actions{justify-self:end}
+
+@media (max-width:480px){
+  .site-header .header-partner{display:none}
+  .site-header{grid-template-columns:1fr auto}
+}
+
+/* Always show the partner name in the header badge */
+.header-partner span{display:block}
+
+@media (max-width:900px){
+  .header-partner{padding:4px 14px 4px 4px}
+  .header-partner span{max-width:190px}
+}
+
+/* Phones: badge moves to its own row under the brand name */
+@media (max-width:700px){
+  .site-header{
+    height:auto;
+    padding:10px 16px;
+    grid-template-columns:1fr auto;
+    row-gap:8px;
+  }
+  .site-header .header-partner{
+    display:flex;
+    grid-column:1 / -1;
+    grid-row:2;
+    justify-self:center;
+    max-width:100%;
+  }
+}
+
+/* Header badge: role title above the partner name */
+.header-partner{max-width:560px;padding:6px 24px 6px 6px}
+.header-partner img{width:46px;height:46px}
+.hp-text{display:flex;flex-direction:column;min-width:0;text-align:left}
+.hp-text small{
+  color:var(--gold);
+  font-size:10px;
+  font-weight:700;
+  letter-spacing:2px;
+  text-transform:uppercase;
+  white-space:nowrap;
+}
+.hp-text strong{color:var(--cream);font-size:14px;font-weight:700;line-height:1.25}
+
+@media (max-width:700px){
+  .hp-text small{font-size:9px;letter-spacing:1.5px;white-space:normal}
+  .hp-text strong{font-size:12px}
+}
+
+/* BIG header partner badge */
+.site-header{height:110px !important}
+
+.site-header .header-partner{
+  max-width:760px !important;
+  padding:10px 34px 10px 10px !important;
+  gap:16px !important;
+  border-radius:999px !important;
+  border-width:1.5px !important;
+}
+.site-header .header-partner img{
+  width:72px !important;
+  height:72px !important;
+}
+.site-header .hp-text small{
+  font-size:14px !important;
+  letter-spacing:3px !important;
+  margin-bottom:2px;
+}
+.site-header .hp-text strong{
+  font-size:24px !important;
+  line-height:1.2 !important;
+}
+
+/* a little bigger brand name + button to match */
+.site-header .brand-main{font-size:28px !important}
+.site-header .header-ticket{font-size:16px !important;padding:18px 32px !important}
+
+@media (max-width:1100px){
+  .site-header .hp-text strong{font-size:18px !important}
+  .site-header .header-partner img{width:58px !important;height:58px !important}
+}
+
+@media (max-width:700px){
+  .site-header{height:auto !important}
+  .site-header .header-partner{padding:8px 20px 8px 8px !important;max-width:100% !important}
+  .site-header .header-partner img{width:52px !important;height:52px !important}
+  .site-header .hp-text small{font-size:11px !important;letter-spacing:1.5px !important}
+  .site-header .hp-text strong{font-size:15px !important}
+  .site-header .brand-main{font-size:18px !important}
+  .site-header .header-ticket{font-size:12px !important;padding:12px 20px !important}
+}
+
+/* Header: everything resizes to fit, nothing wraps badly */
+.site-header{
+  height:auto !important;
+  min-height:84px;
+  padding:10px clamp(14px,2.5vw,56px) !important;
+  display:grid !important;
+  grid-template-columns:auto minmax(0,1fr) auto !important;
+  align-items:center;
+  gap:clamp(10px,1.8vw,28px);
+}
+
+.site-header .brand{justify-self:start}
+.site-header .brand-main{
+  white-space:nowrap !important;
+  font-size:clamp(15px,2vw,28px) !important;
+  letter-spacing:clamp(1px,.25vw,4px) !important;
+}
+
+.site-header .header-actions{justify-self:end;white-space:nowrap}
+.site-header .header-ticket{
+  white-space:nowrap !important;
+  font-size:clamp(11px,1.2vw,16px) !important;
+  padding:clamp(11px,1.3vw,18px) clamp(16px,2vw,32px) !important;
+}
+
+.site-header .header-partner{
+  justify-self:center;
+  min-width:0;
+  max-width:100% !important;
+  padding:clamp(5px,.7vw,10px) clamp(14px,2vw,34px) clamp(5px,.7vw,10px) clamp(5px,.7vw,10px) !important;
+  gap:clamp(8px,1.2vw,16px) !important;
+}
+.site-header .header-partner img{
+  width:clamp(40px,5vw,72px) !important;
+  height:clamp(40px,5vw,72px) !important;
+}
+.site-header .hp-text{min-width:0}
+.site-header .hp-text small{
+  font-size:clamp(9px,1vw,14px) !important;
+  letter-spacing:clamp(1px,.2vw,3px) !important;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+.site-header .hp-text strong{
+  font-size:clamp(12px,1.7vw,24px) !important;
+  display:-webkit-box;
+  -webkit-line-clamp:2;
+  -webkit-box-orient:vertical;
+  overflow:hidden;
+}
+
+/* Phones and small windows: badge moves to its own row */
+@media (max-width:760px){
+  .site-header{
+    grid-template-columns:1fr auto !important;
+    row-gap:8px;
+    padding:10px 14px !important;
+  }
+  .site-header .brand-main{font-size:clamp(15px,4.6vw,20px) !important}
+  .site-header .header-partner{
+    grid-column:1 / -1;
+    grid-row:2;
+    justify-self:center;
+    width:100%;
+    max-width:420px !important;
+  }
+  .site-header .hp-text strong{font-size:clamp(12px,3.6vw,15px) !important}
+}
+
+/* BIG event info boxes */
+.th-section{
+  width:100% !important;
+  max-width:1200px !important;
+  padding:60px 5vw !important;
+}
+.th-grid{
+  grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+  gap:24px !important;
+}
+.th-info{
+  gap:26px !important;
+  min-height:170px;
+  padding:32px 36px;
+  border:1px solid var(--line);
+  border-radius:28px;
+  background:var(--card);
+  box-shadow:inset 0 0 30px rgba(255,150,20,.08);
+}
+.th-info > div:last-child{min-width:0}
+.th-icon{
+  width:84px !important;
+  height:84px !important;
+  font-size:38px !important;
+  border-radius:24px !important;
+}
+.th-info strong{
+  font-size:clamp(22px,2.6vw,32px) !important;
+  line-height:1.2;
+}
+.th-info span{
+  display:block;
+  margin-top:6px;
+  font-size:clamp(16px,1.8vw,20px) !important;
+}
+
+@media (max-width:700px){
+  .th-grid{grid-template-columns:1fr !important}
+  .th-info{min-height:130px;padding:22px;gap:18px}
+  .th-icon{width:64px !important;height:64px !important;font-size:28px !important}
+}
+@media (min-width:801px){
+  .site .final-partner-card:nth-child(4){grid-column:2}
+}

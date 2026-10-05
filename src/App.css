@@ -224,3 +224,58 @@ em{font-style:normal;color:var(--gold)}
   max-width: 92vw;
   line-height: 1.4;
 }
+
+/* Warm brown + gold theme. Loaded AFTER App.css so it overrides it. Delete this file to go back. */
+:root{--bg:#150b02;--panel:#241006;--gold:#f5a623;--gold-2:#ffd27a;--cream:#fff4e0;--muted:rgba(255,244,224,.72);--line:rgba(245,166,35,.3);--btn:linear-gradient(90deg,#ffb020,#e8590c);--card:rgba(255,190,100,.05)}
+body{background:linear-gradient(180deg,#150b02,#2b1506 50%,#150b02) fixed}
+
+/* header + buttons */
+.site-header{background:rgba(21,11,2,.92);backdrop-filter:blur(8px)}
+.header-ticket,.gold-button,.bk-pay,.th-book{background:var(--btn);color:#2a1100;border:0}
+.bk-pay{border-radius:14px}
+
+/* hero */
+.hero{background:linear-gradient(160deg,#4a2108,#150b02)}
+.hero-overlay{background:radial-gradient(circle at 50% 35%,rgba(180,90,0,.22),rgba(21,11,2,.9))}
+.hero-date-card,.presented-pill,.organiser-box,.hero-location-pill,.home-venue-name{background:rgba(21,11,2,.6)}
+
+/* ticker + brands */
+.part3-section{background:#1c0e04}
+.brand-pill{background:var(--card)}
+
+/* venue */
+.home-venue-card,.bk-card,.bk-night{background:var(--card)}
+.home-venue-visual{background:linear-gradient(160deg,#4a2108,#1a0d03)}
+.home-venue-visual-inner{background:linear-gradient(160deg,#5a2a0a,#150b02 75%)}
+
+/* booking */
+.bk-dates button,.bk-tickets button,.bk-select{background:#1d0f05}
+.bk-dates button.active,.bk-tickets button.selected{border-color:var(--gold);background:rgba(245,166,35,.12)}
+.bk-total{background:rgba(245,166,35,.08)}
+
+/* partners (beats the inline <style> in PartnersShowcase) */
+.site .final-partners-showcase{background:radial-gradient(circle at 18% 42%,rgba(160,80,10,.35),transparent 40%),#150b02;color:var(--cream)}
+.site .final-partner-card{background:linear-gradient(145deg,rgba(255,190,100,.06),rgba(60,25,5,.7));border-color:var(--line)}
+.site .final-partner-image{background:#120902}
+.site .final-partners-footer{background:#0f0701}
+.site .final-partners-kicker,.site .final-partner-label,.site .final-partners-head h2 em,.site .final-partners-thanks span{color:var(--gold)}
+
+/* new sections: highlights + contact + whatsapp */
+.th-section{padding:70px 5vw;max-width:1100px;margin:0 auto;text-align:center}
+.th-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;text-align:left}
+.th-info{display:flex;gap:14px;align-items:center}
+.th-icon{flex:none;width:56px;height:56px;display:grid;place-items:center;font-size:22px;border:1px solid var(--line);border-radius:16px;background:var(--card)}
+.th-info strong{display:block;font-size:17px}
+.th-info span{color:var(--muted);font-size:14px}
+.th-book{display:inline-block;margin-top:34px;padding:17px 40px;border-radius:999px;font-size:17px;font-weight:700}
+.th-kicker{color:var(--gold);letter-spacing:4px;font-size:13px;font-weight:700;margin:0}
+.th-contact h2{margin:10px 0;font-family:var(--serif);font-weight:500;font-size:clamp(34px,6vw,52px)}
+.th-lead{max-width:520px;margin:0 auto 28px;color:var(--muted)}
+.th-card{max-width:540px;margin:0 auto;padding:26px;text-align:left;border:1px solid var(--line);border-radius:24px;background:var(--card)}
+.th-card h3{margin:0 0 8px;color:var(--gold);font-family:var(--serif);font-weight:500;font-size:28px}
+.th-card p{margin:0 0 10px;color:var(--muted)}
+.th-row{display:block;padding:14px 0;border-top:1px dashed var(--line)}
+.th-row span{display:block;color:var(--gold);font-size:12px;font-weight:700;letter-spacing:2px}
+.th-row strong{font-size:17px}
+.th-wa{position:fixed;right:18px;bottom:18px;z-index:60;width:56px;height:56px;display:grid;place-items:center;border-radius:50%;background:#25d366;font-size:26px;box-shadow:0 8px 24px rgba(0,0,0,.45)}
+@media (max-width:700px){.th-grid{grid-template-columns:1fr}.th-section{padding:50px 20px}}

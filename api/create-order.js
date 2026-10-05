@@ -5,12 +5,9 @@ const razorpay = new Razorpay({
   key_secret: process.env.RAZORPAY_KEY_SECRET,
 });
 
-// Prices are in rupees. Must match the tickets list in src/App.jsx.
+// Prices are decided here on the server, never in the browser.
+// Kids below 5 are free and never go through payment.
 const tickets = {
-  "kids-1day": {
-    name: "Kids (below 5 years)",
-    price: 0, // free, no payment needed
-  },
   "stag-1day": {
     name: "Adult",
     price: 250,
@@ -26,7 +23,7 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { ticketType, quantity, day } = req.body;
+    const { ticketType, quantity, day, name, phone } = req.body;
 
     if (!ticketType || !tickets[ticketType]) {
       return res.status(400).json({
@@ -44,16 +41,18 @@ export default async function handler(req, res) {
       });
     }
 
-    const ticket = tickets[ticketType];
-    const totalAmount = ticket.price * qty;
+    const customerName = String(name || "").trim().slice(0, 60);
+    const customerPhone = String(phone || "").replace(/\D/g, "").slice(-10);
 
-    // Free tickets never go through Razorpay
-    if (totalAmount <= 0) {
+    if (customerName.length < 2 || customerPhone.length !== 10) {
       return res.status(400).json({
         success: false,
-        message: "Free tickets do not need payment",
+        message: "Please enter your name and a valid 10-digit phone number",
       });
     }
+
+    const ticket = tickets[ticketType];
+    const totalAmount = ticket.price * qty;
 
     const order = await razorpay.orders.create({
       amount: totalAmount * 100,
@@ -63,6 +62,8 @@ export default async function handler(req, res) {
         ticket_type: ticket.name,
         quantity: String(qty),
         day: String(day || "").slice(0, 30),
+        customer_name: customerName,
+        customer_phone: customerPhone,
       },
     });
 
