@@ -170,3 +170,57 @@ em{font-style:normal;color:var(--gold)}
   .bk-card{padding:20px}
 }
 @media (prefers-reduced-motion:reduce){.ticker-track,.brands-track{animation:none}html{scroll-behavior:auto}}
+.presented-pill {
+  white-space: normal;
+  text-align: center;
+  max-width: 92vw;
+  line-height: 1.4;
+}
+/* ---- Hero: single organiser box, button stacked below ---- */
+.hero .organiser-box {
+  display: block;
+  width: min(100%, 520px);
+  text-align: center;
+}
+.hero .organiser-box > div {
+  text-align: center;
+}
+.hero .organiser-box small,
+.hero .organiser-box strong {
+  display: block;
+}
+.hero .hero-button {
+  margin: 0;
+}
+
+/* ---- Long sponsor line wraps on small screens ---- */
+.presented-pill {
+  white-space: normal;
+  text-align: center;
+  max-width: 92vw;
+  line-height: 1.4;
+}
+/* ---- Hero: single organiser box, button stacked below ---- */
+.hero .organiser-box {
+  display: block;
+  width: min(100%, 520px);
+  text-align: center;
+}
+.hero .organiser-box > div {
+  text-align: center;
+}
+.hero .organiser-box small,
+.hero .organiser-box strong {
+  display: block;
+}
+.hero .hero-button {
+  margin: 0;
+}
+
+/* ---- Long sponsor line wraps on small screens ---- */
+.presented-pill {
+  white-space: normal;
+  text-align: center;
+  max-width: 92vw;
+  line-height: 1.4;
+}

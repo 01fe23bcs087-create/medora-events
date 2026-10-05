@@ -1,40 +1,29 @@
 import { useEffect, useState } from "react";
 import "./App.css";
-import shubhamLogo from "./shubham.jpeg";
-import dproductionsLogo from "./dproductions.jpeg";
-import medoraLogo from "./medora.jpeg";
-
 
 // TODO: replace with the final Google Maps URL of Shri Adrusht Laxmi Temple
 // (open your share.google link in the browser and paste the URL it lands on)
-const MAPS_LINK = "https://share.google/HECnqFolBTaq0xffU";
+const MAPS_LINK = "https://maps.app.goo.gl/HzqxeCiMSFsrFTMFA";
 
 const VENUE_NAME = "Shri Adrusht Laxmi Temple";
 const VENUE_ADDRESS = "Gayang Bowdi, Shastri Nagar, Vijayapura";
 
 // One night only: 2-day tickets removed. Ids kept the same so /api/create-order still matches.
 const tickets = [
-  { id: "kids-1day", name: "Kids", subtitle: "Below 5 years", price: 0 },
-  { id: "stag-1day", name: "Adult", subtitle: "Entry", price: 250 },
+  { id: "kids-1day", name: "Kids", subtitle: "5 years below", price: 99 },
+  { id: "stag-1day", name: "Stag", subtitle: "Single entry", price: 499 },
+  { id: "couple-1day", name: "Couple", subtitle: "Entry for two", price: 799 },
+  { id: "group5-1day", name: "Group of 5", subtitle: "Entry for five", price: 2450 },
 ];
 
 // Logos live in /public/logos. Download them there and keep these filenames.
 const brands = [
-  {
-    name: "Jawa Yezdi Motorcycles - Shubham Auto Point",
-    image: shubhamLogo,
-    instagram: "https://www.instagram.com/shubhamautopoint/",
-  },
-  {
-    name: "D Productions",
-    image: dproductionsLogo,
-    instagram: "https://www.instagram.com/d_productions_0007/",
-  },
+  { name: "Jawa Yezdi Motorcycles - Shubham Auto Point", image: "/SHUBHAM%20AUTO%20POINT.jpeg" },
+  { name: "D Productions", image: "/D%20PRODUCTIONS.jpeg" },
   {
     name: "MEDORA - House of Digital Media",
-    image: medoraLogo,
+    image: "/MEDORA%20LOGO.jpeg",
     role: "Digital Media & Website Partner · Bijapur",
-    instagram: "https://www.instagram.com/medora.vijayapura/",
   },
 ];
 
@@ -92,27 +81,19 @@ function Photo({ src, alt, className = "" }) {
 
 /* ---------------- FEATURED BRANDS (pill marquee) ---------------- */
 
-function FeaturedBrands()
- {
+function FeaturedBrands() {
   return (
     <section className="brands-section" id="brands">
       <div className="brands-title">FEATURED BRANDS</div>
       <div className="brands-marquee">
         <div className="brands-track">
           {[...brands, ...brands, ...brands, ...brands].map((brand, index) => (
-            <a
-              className="brand-pill"
-              key={`${brand.name}-${index}`}
-              href={brand.instagram}
-              target="_blank"
-              rel="noreferrer"
-              style={{ textDecoration: "none", color: "inherit", cursor: "pointer" }}
-            >
+            <div className="brand-pill" key={`${brand.name}-${index}`}>
               <div className="brand-logo">
                 <img src={brand.image} alt={brand.name} />
               </div>
               <span>{brand.name}</span>
-            </a>
+            </div>
           ))}
         </div>
       </div>
@@ -153,18 +134,11 @@ function PartnersShowcase() {
       </div>
       <div className="final-partners-grid">
         {brands.map((brand) => (
-          <a
-            className="final-partner-card"
-            key={brand.name}
-            href={brand.instagram}
-            target="_blank"
-            rel="noreferrer"
-            style={{ display: "block", textDecoration: "none", cursor: "pointer" }}
-          >
+          <article className="final-partner-card" key={brand.name}>
             <div className="final-partner-image"><img src={brand.image} alt={brand.name} /></div>
             <div className="final-partner-name">{brand.name}</div>
             <div className="final-partner-label">{brand.role || "Featured Brand"}</div>
-          </a>
+          </article>
         ))}
       </div>
       <div className="final-partners-thanks"><span>✦</span>THANK YOU TO OUR PARTNERS<span>✦</span></div>
@@ -172,6 +146,7 @@ function PartnersShowcase() {
     </section>
   );
 }
+
 /* ---------------- HOME PAGE ---------------- */
 
 function HomePage() {
@@ -307,10 +282,10 @@ function HomePage() {
 /* ---------------- BOOKING PAGE ---------------- */
 
 const ticketLabel = (t) =>
-  t.id.startsWith("kids") ? "Kids (below 5 years)" : "Adult";
+  `${t.name}${t.id.startsWith("kids") ? " (5 years below)" : ""}`;
 
 function BookingPage() {
-  const [selectedTicket, setSelectedTicket] = useState(tickets[1]);
+  const [selectedTicket, setSelectedTicket] = useState(tickets[0]);
   const [quantity, setQuantity] = useState(1);
   const [loading, setLoading] = useState(false);
 
@@ -322,12 +297,6 @@ function BookingPage() {
   }, []);
 
   async function handlePayment() {
-    // Free tickets (kids below 5) need no payment
-    if (total === 0) {
-      alert(`Free entry confirmed for ${quantity} kid(s) below 5 years. See you on ${dayLabel}!`);
-      return;
-    }
-
     try {
       setLoading(true);
 
@@ -344,7 +313,7 @@ function BookingPage() {
         body: JSON.stringify({
           ticketType: selectedTicket.id,
           quantity,
-          day: dayLabel,
+          day: dayLabel, // store this on the server with the order
         }),
       });
 
@@ -415,10 +384,10 @@ function BookingPage() {
       <main>
         <section className="bk-hero">
           <span className="bk-live"><i /> Bookings open</span>
-          <p className="bk-kicker">DANDIYA NIGHT 2.0 · BY D PRODUCTIONS</p>
-          <h1>Vijayapura's Biggest Dandiya Night</h1>
+          <p className="bk-kicker">DANDIYA NIGHT 2.0 · BY AK</p>
+          <h1>Vijayapura, Let's Dandiya!</h1>
           <p className="bk-tagline">Where the city comes to celebrate</p>
-          <p className="bk-sub">Live Music · Dandiya · DJ</p>
+          <p className="bk-sub">Music · Dandiya · DJ · Energy · Together</p>
 
           <div className="bk-nights">
             <div className="bk-night">
@@ -436,6 +405,14 @@ function BookingPage() {
           <p className="bk-sub">One night. Pure Raas spirit.</p>
 
           <div className="bk-card">
+            <p className="bk-label">DATE</p>
+            <div className="bk-dates">
+              <button className="active" type="button">
+                <small>16 OCTOBER</small>
+                <strong>DANDIYA NIGHT</strong>
+              </button>
+            </div>
+
             <p className="bk-label">TICKET</p>
             <div className="bk-tickets">
               {tickets.map((ticket) => (
@@ -445,7 +422,7 @@ function BookingPage() {
                   onClick={() => setSelectedTicket(ticket)}
                 >
                   <span>{ticketLabel(ticket)}</span>
-                  <b>{ticket.price === 0 ? "FREE" : `₹${ticket.price.toLocaleString("en-IN")}`}</b>
+                  <b>₹{ticket.price.toLocaleString("en-IN")}</b>
                 </button>
               ))}
             </div>
@@ -463,11 +440,11 @@ function BookingPage() {
 
             <div className="bk-total">
               <span>Total</span>
-              <strong>{total === 0 ? "FREE" : `₹${total.toLocaleString("en-IN")}`}</strong>
+              <strong>₹{total.toLocaleString("en-IN")}</strong>
             </div>
 
             <button className="bk-pay" onClick={handlePayment} disabled={loading}>
-              {loading ? "Processing..." : total === 0 ? "Confirm free entry" : "Pay now"}
+              {loading ? "Processing..." : "Pay now"}
             </button>
             <p className="bk-secure">Payments are securely processed by Razorpay.</p>
           </div>
@@ -496,6 +473,7 @@ function BookingPage() {
     </div>
   );
 }
+
 /* ---------------- APP ---------------- */
 
 export default function App() {

@@ -5,43 +5,20 @@ const razorpay = new Razorpay({
   key_secret: process.env.RAZORPAY_KEY_SECRET,
 });
 
+// Prices are in rupees. Must match the tickets list in src/App.jsx.
 const tickets = {
   "kids-1day": {
-    name: "Kids (5 years below)",
-    price: 99,
-  },
-  "kids-2day": {
-    name: "Kids (5 years below) — 2 Days",
-    price: 149,
+    name: "Kids (below 5 years)",
+    price: 0, // free, no payment needed
   },
   "stag-1day": {
-    name: "Stag",
-    price: 499,
-  },
-  "stag-2day": {
-    name: "Stag — 2 Days",
-    price: 899,
-  },
-  "couple-1day": {
-    name: "Couple",
-    price: 799,
-  },
-  "couple-2day": {
-    name: "Couple — 2 Days",
-    price: 1499,
-  },
-  "group5-1day": {
-    name: "Group of 5",
-    price: 2450,
-  },
-  "group5-2day": {
-    name: "Group of 5 — 2 Days",
-    price: 4699,
+    name: "Adult",
+    price: 250,
   },
 };
 
 export default async function handler(req, res) {
-    if (req.method !== "POST") {
+  if (req.method !== "POST") {
     return res.status(405).json({
       success: false,
       message: "Method not allowed",
@@ -49,7 +26,7 @@ export default async function handler(req, res) {
   }
 
   try {
-   const { ticketType, quantity, day } = req.body;
+    const { ticketType, quantity, day } = req.body;
 
     if (!ticketType || !tickets[ticketType]) {
       return res.status(400).json({
@@ -69,6 +46,14 @@ export default async function handler(req, res) {
 
     const ticket = tickets[ticketType];
     const totalAmount = ticket.price * qty;
+
+    // Free tickets never go through Razorpay
+    if (totalAmount <= 0) {
+      return res.status(400).json({
+        success: false,
+        message: "Free tickets do not need payment",
+      });
+    }
 
     const order = await razorpay.orders.create({
       amount: totalAmount * 100,
@@ -96,4 +81,4 @@ export default async function handler(req, res) {
       message: "Unable to create payment order",
     });
   }
-};
+}
