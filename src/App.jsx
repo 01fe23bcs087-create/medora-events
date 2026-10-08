@@ -619,8 +619,7 @@ function BookingPage() {
                   className={selectedTicket.id === ticket.id ? "selected" : ""}
                   onClick={() => setSelectedTicket(ticket)}
                 >
-                  <span>{ticketLabel(ticket)}</span>
-                  <b>{ticket.price === 0 ? "FREE" : `₹${ticket.price.toLocaleString("en-IN")}`}</b>
+<span>{ticket.id.startsWith("kids") ? "Kids (below 5 years)" : ticket.name}</span>                  <b>{ticket.price === 0 ? "FREE" : `₹${ticket.price.toLocaleString("en-IN")}`}</b>
                 </button>
               ))}
             </div>
