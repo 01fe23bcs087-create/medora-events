@@ -21,8 +21,8 @@ const tickets = [
   { id: "kids-1day", name: "Kids", subtitle: "Below 5 years", price: 0 },
   { id: "stag-1day", name: "Adult", subtitle: "Entry", price: 199 },
   { id: "Couple-1day", name: "Adult", subtitle: "Entry", price: 399 },
-  { id: "Group of 5", name: "Adult", subtitle: "Entry", price: 999 },
-  { id: "Group of 10", name: "Adult", subtitle: "Entry", price: 1799 },
+  { id: "Group of 5", name: "Group of 5", subtitle: "Entry", price: 999 },
+  { id: "Group of 10", name: "Group of 10", subtitle: "Entry", price: 1799 },
 
 
 
@@ -88,8 +88,8 @@ const headerPartners = [
     instagram: brands[1].instagram,
   },
     {
-    role: "CHANGE ROLE",
-    name: "CHANGE BRAND NAME",
+    role: "PHOTOGRAPHY PATNER",
+    name: "mounesh__photography",
     image: brands[3].image,
     instagram: brands[3].instagram,
   },
@@ -236,7 +236,7 @@ function PartnersShowcase() {
 
 function Highlights() {
   const items = [
-    ["📅", "16 October", "Dandiya Night"],
+    ["📅", "16 October", "Dandiya Night 2.0"],
     ["📍", VENUE_NAME, "Vijayapura"],
     ["🎶", "Live Music & DJ", "Dandiya all night"],
     ["🕔", "Doors open 5 PM", "Till 10 PM"],
@@ -428,8 +428,13 @@ function HomePage() {
 
 /* ---------------- BOOKING PAGE ---------------- */
 
-const ticketLabel = (t) =>
-  t.id.startsWith("kids") ? "Kids (below 5 years)" : t.name;
+const tickets = [
+  { id: "kids-1day", name: "Kids", subtitle: "Below 5 years", price: 0 },
+  { id: "stag-1day", name: "Stag", subtitle: "Entry for one", price: 199 },
+  { id: "couple-1day", name: "Couple", subtitle: "Entry for two", price: 399 },
+  { id: "group5-1day", name: "Group of 5", subtitle: "Entry for five", price: 999 },
+  { id: "group10-1day", name: "Group of 10", subtitle: "Entry for ten", price: 1799 },
+];
 
 function BookingPage() {
   const [selectedTicket, setSelectedTicket] = useState(tickets[1]);
