@@ -8,11 +8,13 @@ const razorpay = new Razorpay({
 // Prices are decided here on the server, never in the browser.
 // Kids below 5 are free and never go through payment.
 const tickets = {
-  "stag-1day": {
-    name: "Adult",
-    price: 250,
-  },
+  "kids-1day": { name: "Kids (below 5 years)", price: 0 },
+  "stag-1day": { name: "Stag", price: 199 },
+  "couple-1day": { name: "Couple", price: 399 },
+  "group5-1day": { name: "Group of 5", price: 999 },
+  "group10-1day": { name: "Group of 10", price: 1799 },
 };
+
 
 export default async function handler(req, res) {
   if (req.method !== "POST") {
