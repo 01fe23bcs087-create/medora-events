@@ -6,6 +6,7 @@ import shubhamLogo from "./shubham.jpeg";
 import dproductionsLogo from "./dproductions.jpeg";
 import medoraLogo from "./medora.jpeg";
 import mpLogo from "./MP.jpeg";
+import { Analytics } from '@vercel/analytics/react';
 
 const MAPS_LINK = "https://share.google/HECnqFolBTaq0xffU";
 
@@ -18,7 +19,13 @@ const WHATSAPP_NUMBER = "+91 7483543848";
 // One night only. Ids match /api/create-order.
 const tickets = [
   { id: "kids-1day", name: "Kids", subtitle: "Below 5 years", price: 0 },
-  { id: "stag-1day", name: "Adult", subtitle: "Entry", price: 250 },
+  { id: "stag-1day", name: "Adult", subtitle: "Entry", price: 199 },
+  { id: "Couple-1day", name: "Adult", subtitle: "Entry", price: 399 },
+  { id: "Group of 5", name: "Adult", subtitle: "Entry", price: 999 },
+  { id: "Group of 10", name: "Adult", subtitle: "Entry", price: 1799 },
+
+
+
 ];
 
 const brands = [
@@ -422,7 +429,7 @@ function HomePage() {
 /* ---------------- BOOKING PAGE ---------------- */
 
 const ticketLabel = (t) =>
-  t.id.startsWith("kids") ? "Kids (below 5 years)" : "Adult";
+  t.id.startsWith("kids") ? "Kids (below 5 years)" : t.name;
 
 function BookingPage() {
   const [selectedTicket, setSelectedTicket] = useState(tickets[1]);
@@ -664,7 +671,12 @@ function BookingPage() {
 
 /* ---------------- APP ---------------- */
 
-export default function App() {
-  const isBookingPage = window.location.pathname.startsWith("/book");
-  return isBookingPage ? <BookingPage /> : <HomePage />;
-}
+   export default function App() {
+     const isBookingPage = window.location.pathname.startsWith("/book");
+     return (
+       <>
+         {isBookingPage ? <BookingPage /> : <HomePage />}
+         <Analytics />
+       </>
+     );
+   }
