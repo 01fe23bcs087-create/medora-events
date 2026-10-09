@@ -5,12 +5,13 @@ const razorpay = new Razorpay({
   key_secret: process.env.RAZORPAY_KEY_SECRET,
 });
 
+
 const tickets = {
-  "kids-1day": { name: "Kids (below 5 years)", price: 0 },
-  "stag-1day": { name: "Stag", price: 199 },
-  "couple-1day": { name: "Couple", price: 399 },
-  "group of 5-1day": { name: "Group of 5", price: 999 },
-  "group of 10-1day": { name: "Group of 10", price: 1799 },
+  "kids-1day": { name: "Kids", price: 0 },
+  "stag-1day": { name: "Adult", price: 199 },
+  "Couple-1day": { name: "Couple", price: 399 },
+  "Group of 5": { name: "Group of 5", price: 999 },
+  "Group of 10": { name: "Group of 10", price: 1799 },
 };
 
 export default async function handler(req, res) {
