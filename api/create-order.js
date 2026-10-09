@@ -5,19 +5,17 @@ const razorpay = new Razorpay({
   key_secret: process.env.RAZORPAY_KEY_SECRET,
 });
 
-// Prices are decided here on the server, never in the browser.
-// Kids below 5 are free and never go through payment.
 const tickets = {
   "kids-1day": { name: "Kids (below 5 years)", price: 0 },
   "stag-1day": { name: "Stag", price: 199 },
   "couple-1day": { name: "Couple", price: 399 },
-  "group5-1day": { name: "Group of 5", price: 999 },
-  "group10-1day": { name: "Group of 10", price: 1799 },
+  "group of 5-1day": { name: "Group of 5", price: 999 },
+  "group of 10-1day": { name: "Group of 10", price: 1799 },
 };
-
 
 export default async function handler(req, res) {
   if (req.method !== "POST") {
+    res.setHeader("Allow", "POST");
     return res.status(405).json({
       success: false,
       message: "Method not allowed",
@@ -25,7 +23,7 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { ticketType, quantity, day, name, phone } = req.body;
+    const { ticketType, quantity, day, name, phone } = req.body || {};
 
     if (!ticketType || !tickets[ticketType]) {
       return res.status(400).json({
@@ -44,17 +42,38 @@ export default async function handler(req, res) {
     }
 
     const customerName = String(name || "").trim().slice(0, 60);
-    const customerPhone = String(phone || "").replace(/\D/g, "").slice(-10);
+    const rawPhone = String(phone || "").replace(/\D/g, "");
 
-    if (customerName.length < 2 || customerPhone.length !== 10) {
+    const customerPhone =
+      rawPhone.length === 12 && rawPhone.startsWith("91")
+        ? rawPhone.slice(2)
+        : rawPhone;
+
+    if (customerName.length < 2 || !/^[6-9]\d{9}$/.test(customerPhone)) {
       return res.status(400).json({
         success: false,
-        message: "Please enter your name and a valid 10-digit phone number",
+        message: "Enter your name and a valid Indian mobile number",
       });
     }
 
     const ticket = tickets[ticketType];
+
+    // Free tickets need a separate booking flow.
+    if (ticket.price === 0) {
+      return res.status(400).json({
+        success: false,
+        message: "Free tickets must use the free booking flow",
+      });
+    }
+
     const totalAmount = ticket.price * qty;
+
+    if (!day || !String(day).trim()) {
+      return res.status(400).json({
+        success: false,
+        message: "Please select an event day",
+      });
+    }
 
     const order = await razorpay.orders.create({
       amount: totalAmount * 100,
@@ -63,7 +82,7 @@ export default async function handler(req, res) {
       notes: {
         ticket_type: ticket.name,
         quantity: String(qty),
-        day: String(day || "").slice(0, 30),
+        day: String(day).slice(0, 30),
         customer_name: customerName,
         customer_phone: customerPhone,
       },
