@@ -19,10 +19,10 @@ const WHATSAPP_NUMBER = "+91 7483543848";
 // One night only. Ids match /api/create-order.
 const tickets = [
   { id: "kids-1day", name: "Kids", subtitle: "Below 5 years", price: 0 },
-  { id: "stag-1day", name: "Adult", subtitle: "Entry", price: 199 },
+  { id: "stag-1day", name: "Adult", subtitle: "Entry", price: 250 },
   { id: "Couple-1day", name: "Couple", subtitle: "Entry", price: 399 },
-  { id: "Group of 5", name: "Group of 5", subtitle: "Entry", price: 999 },
-  { id: "Group of 10", name: "Group of 10", subtitle: "Entry", price: 1799 },
+  { id: "Group of 5", name: "Group of 5", subtitle: "Entry", price: 1099 },
+  { id: "Group of 10", name: "Group of 10", subtitle: "Entry", price: 2099 },
 
 
 

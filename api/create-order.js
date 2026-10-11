@@ -8,10 +8,10 @@ const razorpay = new Razorpay({
 
 const tickets = {
   "kids-1day": { name: "Kids", price: 0 },
-  "stag-1day": { name: "Adult", price: 199 },
+  "stag-1day": { name: "Adult", price: 250 },
   "Couple-1day": { name: "Couple", price: 399 },
-  "Group of 5": { name: "Group of 5", price: 999 },
-  "Group of 10": { name: "Group of 10", price: 1799 },
+  "Group of 5": { name: "Group of 5", price: 1099 },
+  "Group of 10": { name: "Group of 10", price: 2099 },
 };
 
 export default async function handler(req, res) {
